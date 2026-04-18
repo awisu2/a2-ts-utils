@@ -7,6 +7,7 @@ Usage: $0 <command> [args]
 Commands:
   init
   build
+  test
 EOF
 }
 
@@ -43,6 +44,10 @@ EOF
   build)
     cd "$BASE_DIR"
     pnpm -r run build
+  ;;
+  test)
+    cd "$BASE_DIR/test"
+    node index.js
   ;;
   *)
     help
