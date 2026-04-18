@@ -144,3 +144,31 @@ pnpm add ../packages/browser ../packages/node
     "@a2-ts-utils/node": "link:..\\packages\\node"
   }
 ```
+
+## browser, node から commonを利用する方法について
+
+common の tsconfig.json に　以下を追加
+
+```json
+{}
+  "compilerOptions": {
+    // common target
+    "target": "es2020",
+    ...
+    // refarenced project settings from ohter project
+    "composite": true
+```
+
+```bash
+# package.jsonを更新し、 node_modulesにリンクが貼られる
+pnpm --filter @a2-ts-utils/browser add @a2-ts-utils/common@workspace:*
+pnpm --filter @a2-ts-utils/common add @a2-ts-utils/common@workspace:*
+```
+
+それぞれの tsconfig.jsonに以下を追加
+
+```json
+  "references": [
+    {"path": "../common"}
+  ]
+```

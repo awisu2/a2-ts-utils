@@ -19,5 +19,8 @@
       "import": "./dist/*.js",
       "require": "./dist/*.cjs"
     }
+  },
+  "dependencies": {
+    "@a2-ts-utils/common": "workspace:*"
   }
 }

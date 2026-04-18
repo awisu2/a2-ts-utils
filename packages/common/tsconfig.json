@@ -14,10 +14,9 @@
 
     // output directory
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+
+    "composite": true
   },
-  "include": ["src/**/*.ts"],
-  "references": [
-    {"path": "../common"}
-  ]
+  "include": ["src/**/*.ts"]
 }

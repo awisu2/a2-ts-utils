@@ -49,6 +49,17 @@ EOF
     cd "$BASE_DIR/test"
     node index.js
   ;;
+  clean)
+    cd "$BASE_DIR"
+    rm -rf "node_modules" "dist" "packages/*/dist"
+    if [ -f "pnpm-lock.yaml" ]; then
+      rm "pnpm-lock.yaml"
+    fi
+    pnpm store prune
+    
+    echo "Cleaned node_modules, dist folders, and pnpm-lock.yaml"
+    echo "Please run 'pnpm install' to reinstall dependencies."
+  ;;
   *)
     help
     exit 1
