@@ -6,6 +6,7 @@ help() {
 Usage: $0 <command> [args]
 Commands:
   init
+  build
 EOF
 }
 
@@ -38,6 +39,10 @@ EOF
         echo "No pnpm init. already exists package.json"
       fi
     done
+  ;;
+  build)
+    cd "$BASE_DIR"
+    pnpm -r run build
   ;;
   *)
     help

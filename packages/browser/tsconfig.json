@@ -1,0 +1,19 @@
+{
+  // load other setting files
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+
+    // usable library settings
+    // DOM: Document Object Model (browser apis)
+    // EsNext: latest javascript functions
+    "lib": ["DOM", "ESNext"],
+
+    // pnpm add -Dw @types/node
+    // "types": ["node"],
+
+    // output directory
+    "outDir": "./dist"
+  },
+  "include": ["index.ts"]
+}
