@@ -35,7 +35,19 @@ importers:
         specifier: workspace:*
         version: link:../common
 
+  test3:
+    dependencies:
+      '@a2-ts-utils/browser':
+        specifier: ^1.0.0
+        version: 1.0.0
+
 packages:
+
+  '@a2-ts-utils/browser@1.0.0':
+    resolution: {integrity: sha512-V06v3zyRlPzqE+BTo/JsK+b+TbYeNKfLYsWFiNZxEi7fsoq6dEDEisbVE11Hva3ztrnmbe3hlFhWJDk25FmClA==}
+
+  '@a2-ts-utils/common@1.0.0':
+    resolution: {integrity: sha512-Fp/FZyOr2Wyan2obA+67IGOKgiIjoUiCd/9O3uwnwgdmjMQ/00cwLxwitbQS63wJSu6HBotBZWpFCPI38eljyA==}
 
   '@babel/helper-string-parser@7.27.1':
     resolution: {integrity: sha512-qMlSxKbpRlAridDExk92nSobyDdpPijUq2DW6oDnUqd0iOGxmQjyqhMIihI9+zv4LPyZdRje2cavWPbCbWm3eA==}
@@ -676,6 +688,12 @@ packages:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
 snapshots:
+
+  '@a2-ts-utils/browser@1.0.0':
+    dependencies:
+      '@a2-ts-utils/common': 1.0.0
+
+  '@a2-ts-utils/common@1.0.0': {}
 
   '@babel/helper-string-parser@7.27.1': {}
 

@@ -220,3 +220,33 @@ npm adduser --registry $URL --auth-type=legacy
 # 各パッケージマネージャでもログイン可能だが共有のため、これでOK
 npm login --registry $URL
 ```
+
+## verdaccioを利用するようにする
+
+レジストリを登録することで、あまり存在を気にせずに管理可能
+
+```bash
+# set default registry
+npm config set registry http://localhost:4873
+npm config get registry
+```
+
+- これだけで npm, yarn(v1), pnpm でロカル及び npm registryを参照するようになる
+  - verdaccio 側で、対象パッケージがないときに npm registoryにリダイレクトする
+
+## yarn v2~ の場合
+
+パッケージの管理をプロジェクトごとに行っているため、別途設定が必要
+
+.yarnrc.yml
+
+```bash
+npmScopes:
+  a2-ts-utils:
+    npmRegistryServer: 'http://localhost:4873'
+
+unsafeHttpWhitelist:
+  - 'localhost'
+```
+
+- `yarn remove "@a2-ts-utils/browser"`

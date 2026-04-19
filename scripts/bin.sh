@@ -10,6 +10,7 @@ Commands:
   test
   clean
   pack
+  publish [--force]
 EOF
 }
 
@@ -20,6 +21,9 @@ PNPM_WORKSPACE_FILE="pnpm-workspace.yaml"
 
 PACKAGE_BASE="packages"
 PACKAGES=("common" "browser" "node")
+
+# verdaccio registry url (local registry)
+NPM_RESISTORY=`npm config get registry`
 
 [ $# -ge 1 ] && { COMMAND="$1"; shift; }
 case "${COMMAND:-}" in
@@ -68,6 +72,40 @@ EOF
       mkdir -p "$BASE_DIR/$PACKAGE_BASE/$_PKG"
       cd "$BASE_DIR/$PACKAGE_BASE/$_PKG"
       pnpm pack
+    done
+  ;;
+  publish)
+    echo "Publishing packages to registry: $NPM_RESISTORY (may using verdaccio)"
+    
+    PUBLISH_OPTS=""
+    if [ $# -gt 0 ] && [ "$1" = "--force" ]; then
+      shift
+      
+      echo "Setted --force flag. Unpublishing existing packages from registry before publishing."
+      set +e
+      for _PKG in "${PACKAGES[@]}"; do
+        echo "Unpublishing package: $_PKG"
+        cd "$BASE_DIR/$PACKAGE_BASE/$_PKG"
+        npm unpublish --registry "$NPM_RESISTORY" --force
+      done
+      set -e
+      
+      PUBLISH_OPTS="--force"
+    fi
+    
+    echo "Publishing packages..."
+    cd "$BASE_DIR"
+    pnpm -r publish --no-git-checks $PUBLISH_OPTS
+  ;;
+  list)
+    echo "Current registry: $NPM_RESISTORY"
+    echo "Seraching for packages with prefix '@a2-ts-utils' ====="
+    npm search @a2-ts-utils
+    
+    echo "Viewing details ====="
+    for _PKG in "${PACKAGES[@]}"; do
+      echo "Pkg: @a2-ts-utils/$_PKG -----"
+      npm view "@a2-ts-utils/$_PKG"
     done
   ;;
   *)
