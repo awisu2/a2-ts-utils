@@ -8,6 +8,8 @@ Commands:
   init
   build
   test
+  clean
+  pack
 EOF
 }
 
@@ -59,6 +61,14 @@ EOF
     
     echo "Cleaned node_modules, dist folders, and pnpm-lock.yaml"
     echo "Please run 'pnpm install' to reinstall dependencies."
+  ;;
+  pack)
+    for _PKG in "${PACKAGES[@]}"; do
+      echo "setup package: $_PKG"
+      mkdir -p "$BASE_DIR/$PACKAGE_BASE/$_PKG"
+      cd "$BASE_DIR/$PACKAGE_BASE/$_PKG"
+      pnpm pack
+    done
   ;;
   *)
     help

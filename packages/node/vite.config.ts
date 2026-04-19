@@ -45,7 +45,7 @@ export default defineConfig({
     rollupOptions: {
       // パッキングするときに、外部のモジュールをバンドルに含めないようにする設定 (e.g. axios, lodash)
       // exclude built-in node modules (fs, path, os)
-      external: ["fs", "path", "os"],
+      external: ["fs", "path", "os", "@a2-ts-utils/common"],
     },
   },
   plugins: [

@@ -172,3 +172,51 @@ pnpm --filter @a2-ts-utils/common add @a2-ts-utils/common@workspace:*
     {"path": "../common"}
   ]
 ```
+
+## ローカルnpmサーバ verdaccio
+
+```bash
+npm install -g verdaccio
+# サーバ起動(ただし同期実行で開きっぱなしの必要) =====
+verdaccio
+```
+
+```bash
+# バックグラウンド及び自動実行設定 =====
+# windows (ただ、linux系ならsystmctlで設定できるので実質windowsのみ)
+npm install -g pm2 pm2-windows-startup
+# npm install -g pm2
+
+# pm2の起動をレジストリに登録 =====
+pm2-startup install
+
+# 起動及び設定 =====
+# Note: verdaccio や where verdaccio で調べたパスだと、pm2がうまく扱えないため直接jsファイルを実行
+pm2 start "C:\Users\awisu\AppData\Roaming\npm\node_modules\verdaccio\build\lib\cli.js" --name verdaccio
+pm2 list
+
+pm2 save
+
+# 停止及び削除 =====
+pm2 stop verdaccio
+# idでも良い (pm2 delete 0)
+pm2 delete verdaccio
+
+# 全削除と、自動実行停止 =====
+pm2 delete all
+pm2-startup uninstall
+```
+
+### 利用方法
+
+```bash
+# urlはvardaccionデフォルトのもの。不明な場合は一度確かめておくといい
+URL=http://localhost:4873
+# ユーザ登録 (登録後 ログインも行われる)
+# (id: user, pass: pasword, email: user@local.host)
+npm adduser --registry $URL --auth-type=legacy
+
+# ログインする (何等かでログ案とした場合)
+# 各パッケージマネージャでもログイン可能だが共有のため、これでOK
+npm login --registry $URL
+```
