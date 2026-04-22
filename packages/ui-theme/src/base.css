@@ -1,0 +1,27 @@
+@reference "tailwindcss";
+
+@layer base {
+  .a2-contents {
+    html {
+      @apply text-[15px];
+    }
+
+    html,
+    body {
+      @apply size-full;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply font-bold;
+    }
+  }
+  .a2-big-font {
+      @apply text-[40px];
+      font-weight: bold !important;
+  }
+}
