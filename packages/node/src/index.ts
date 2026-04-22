@@ -1,3 +1,3 @@
 export * as fs from "./fs";
 
-export * from "./cosnt";
+export const Name = "@a2-ts-utils/node";

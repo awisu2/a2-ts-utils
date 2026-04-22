@@ -2,14 +2,15 @@
   // load other setting files
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "es2022",
 
-    // usable library settings
+    // using library for type checking in editor.
     // DOM: Document Object Model (browser apis)
     // EsNext: latest javascript functions
-    "lib": ["ESNext"],
+    "lib": ["esnext"],
 
     // pnpm add -Dw @types/node
+    // 両対応のため、dom または node のどちらかを選択する必要があり、nodeで対応している
     "types": ["node"],
 
     // output directory

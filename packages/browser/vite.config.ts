@@ -29,7 +29,7 @@ const getEntries = () => {
 export default defineConfig({
   build: {
     // build target broswer: esnext, es2020, node: node24
-    target: "es2020",
+    target: "es2022",
     lib: {
       // get correct path
       entry: getEntries(),
@@ -39,8 +39,8 @@ export default defineConfig({
 
       // output format. ex: ESM, ES Module, cjs: CommonJS
       // es: using import, export
-      // cjs: using require, module.exports
-      formats: ["es", "cjs"],
+      // cjs: using require, module.exports (not need for browser)
+      formats: ["es"],
 
       // output file name without extension (e.g. index.js or index.cjs)
       fileName: (format, entryName) =>
@@ -48,7 +48,7 @@ export default defineConfig({
     },
     // settings of rollup
     rollupOptions: {
-      // パッキングするときに、外部のモジュールをバンドルに含めないようにする設定 (e.g. axios, lodash)
+      // パッキングするときに、外部のモジュールを "バンドルに含めない" ようにする設定 (e.g. axios, lodash)
       external: ["@a2-ts-utils/common"],
     },
   },

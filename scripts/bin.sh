@@ -20,7 +20,7 @@ BASE_DIR="$(cd "$DIR/.." && pwd)"
 PNPM_WORKSPACE_FILE="pnpm-workspace.yaml"
 
 PACKAGE_BASE="packages"
-PACKAGES=("common" "browser" "node")
+PACKAGES=("common" "browser" "node", "svelte")
 
 # verdaccio registry url (local registry)
 NPM_RESISTORY=`npm config get registry`

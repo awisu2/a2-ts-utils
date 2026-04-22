@@ -1,3 +1,3 @@
 export * as task from "./task";
 
-export * from "./const.ts";
+export const Name = "@a2-ts-utils/common";

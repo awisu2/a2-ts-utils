@@ -2,12 +2,12 @@
   // load other setting files
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "es2022",
 
     // usable library settings
     // DOM: Document Object Model (browser apis)
     // EsNext: latest javascript functions
-    "lib": ["DOM", "ESNext"],
+    "lib": ["dom", "esnext"],
 
     // pnpm add -Dw @types/node
     // "types": ["node"],
@@ -15,6 +15,8 @@
     // output directory
     "outDir": "./dist",
     "rootDir": "./src",
+
+    "composite": true
   },
   "include": ["src/**/*.ts"],
   "references": [

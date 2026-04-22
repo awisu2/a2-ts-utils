@@ -34,13 +34,13 @@ export default defineConfig({
       // get correct path
       entry: getEntries(),
 
-      // regist to globalThis with this name
-      name: "A2TsUtilsNode",
+      // regist to window with this name
+      name: "A2TsUtilsSvelte",
 
       // output format. ex: ESM, ES Module, cjs: CommonJS
       // es: using import, export
-      // cjs: using require, module.exports
-      formats: ["es", "cjs"],
+      // cjs: using require, module.exports (not need for browser)
+      formats: ["es"],
 
       // output file name without extension (e.g. index.js or index.cjs)
       fileName: (format, entryName) =>
@@ -49,8 +49,7 @@ export default defineConfig({
     // settings of rollup
     rollupOptions: {
       // パッキングするときに、外部のモジュールをバンドルに含めないようにする設定 (e.g. axios, lodash)
-      // exclude built-in node modules (fs, path, os)
-      external: ["fs", "path", "os"],
+      external: ["@a2-ts-utils/browser"],
     },
   },
   plugins: [

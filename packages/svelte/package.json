@@ -1,7 +1,8 @@
 {
-  "name": "@a2-ts-utils/common",
-  "version": "26.4.3",
+  "name": "@a2-ts-utils/svelte",
+  "version": "26.4.2",
   "description": "",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build"
@@ -24,5 +25,12 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@a2-ts-utils/browser": "workspace:*"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "svelte": "^5.55.4"
+  }
 }
