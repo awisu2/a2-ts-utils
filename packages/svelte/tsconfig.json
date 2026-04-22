@@ -10,13 +10,16 @@
     "lib": ["dom", "esnext"],
 
     // pnpm add -Dw @types/node
-    // "types": ["node"],
+    "types": ["svelte"],
+
+    // use bundler(e.g. vite, webpack) module resolution strategy
+    // "moduleResolution": "bundler",
 
     // output directory
     "outDir": "./dist",
     "rootDir": "./src",
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.svelte"],
   "references": [
     {"path": "../browser"},
   ]

@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import { resolve } from "path";
 import { existsSync, readdirSync, statSync } from "fs";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
 
 // generate entries (e.g. {test: ./src/test/index.ts}) for library mode
 const getEntries = () => {
@@ -49,10 +50,21 @@ export default defineConfig({
     // settings of rollup
     rollupOptions: {
       // パッキングするときに、外部のモジュールをバンドルに含めないようにする設定 (e.g. axios, lodash)
-      external: ["@a2-ts-utils/browser"],
+      external: [
+        "@a2-ts-utils/browser",
+        // svelte自体のモジュールを除外しておかないと、読込み時にエラーになる
+        "svelte",
+        "svelte/internal",
+        "svelte/internal/client",
+        "svelte/internal/server",
+        "svelte/jsx-runtime",
+        "svelte/elements",
+        /^svelte\//,
+      ],
     },
   },
   plugins: [
+    svelte(),
     // allow to generate .d.ts files for TypeScript projects
     dts({ rollupTypes: true }),
   ],
