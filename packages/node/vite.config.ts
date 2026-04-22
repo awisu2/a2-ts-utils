@@ -2,18 +2,23 @@ import { defineConfig } from "vite";
 // generate .d.ts files
 import dts from "vite-plugin-dts";
 import { resolve } from "path";
-import { readdirSync, statSync } from "fs";
+import { existsSync, readdirSync, statSync } from "fs";
 
 // generate entries
 const getEntries = () => {
   const srcPath = resolve(__dirname, "src");
   const entries: Record<string, string> = {};
 
+  const indexFile = resolve(srcPath, "index.ts");
+  if (existsSync(indexFile)) {
+    entries["index"] = indexFile;
+  }
+
   readdirSync(srcPath).forEach((dir) => {
     const fullPath = resolve(srcPath, dir);
     const entryFile = resolve(fullPath, "index.ts");
 
-    if (statSync(fullPath).isDirectory() && statSync(entryFile).isFile()) {
+    if (statSync(fullPath).isDirectory() && existsSync(entryFile)) {
       entries[dir] = entryFile;
     }
   });

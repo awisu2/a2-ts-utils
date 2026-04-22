@@ -10,7 +10,7 @@ Commands:
   test
   clean
   pack
-  publish [--force]
+  publish [--force] : --force try to unpublish before publish and set --force to publish.
 EOF
 }
 
@@ -92,6 +92,10 @@ EOF
       
       PUBLISH_OPTS="--force"
     fi
+    
+    echo "Building packages before publishing..."
+    cd "$BASE_DIR"
+    pnpm -r run build
     
     echo "Publishing packages..."
     cd "$BASE_DIR"

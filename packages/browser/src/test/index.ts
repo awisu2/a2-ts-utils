@@ -1,3 +1,3 @@
-import { hello as commonHello } from "@a2-ts-utils/common/test";
+import { NAME } from "@a2-ts-utils/common";
 
-export const hello = () => "Hello from Browser3! with common: " + commonHello();
+export const hello = () => "Hello from Browser4! with common: " + NAME;

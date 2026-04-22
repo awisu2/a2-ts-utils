@@ -1,10 +1,8 @@
 {
   "name": "@a2-ts-utils/browser",
-  "version": "1.0.0",
+  "version": "26.4.8",
   "description": "",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build"
@@ -14,12 +12,20 @@
   "license": "ISC",
   "packageManager": "pnpm@10.33.0",
   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
     "./*": {
       "types": "./dist/*.d.ts",
       "import": "./dist/*.js",
       "require": "./dist/*.cjs"
     }
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@a2-ts-utils/common": "workspace:*"
   }
