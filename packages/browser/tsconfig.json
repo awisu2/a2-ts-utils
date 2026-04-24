@@ -19,7 +19,5 @@
     "composite": true
   },
   "include": ["src/**/*.ts"],
-  "references": [
-    {"path": "../common"}
-  ]
+  "references": [{ "path": "../common" }]
 }

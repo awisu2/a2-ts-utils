@@ -1,8 +1,44 @@
-## setup note
+# setup note
 
 browser, node 用の自前ライブラリを pnpm で構成することを目的とする
 
-### 1: pnpm の設定
+## 0: install pnpm
+
+````bash
+# [!] 管理者権限で実行
+corepack enable
+corepack enable pnpm
+
+# バージョンチェック 異なるようであればバージョンアップ推奨
+pnpm -v
+npm view pnpm dist-tags.latest
+corepack prepare pnpm@10.33.2 --activate
+```
+
+- Note: corepack は Node.js の標準パッケージマネージャ機能 pnpm や yarn など global インストールしがちなものを管理してくれる
+
+### 0-2: 番外編 Node.jsが古いと言われた場合
+
+windows
+
+```bash
+# winget管理か確認, 出てこないなら Node.js 公式からダウンロードするのが早い
+winget list node
+
+# 安定板でアップグレード
+winget upgrade --id OpenJS.NodeJS.LTS -e --source winget
+
+# バージョン付きで管理していた場合 =====
+# そのバージョンをアップグレード
+winget upgrade --id OpenJS.NodeJS.16 -e --source winget
+
+# 安定板をインストール
+winget install OpenJS.NodeJS.LTS --source winget
+
+node -v
+```
+
+## 1: pnpm の設定
 
 pnmp では複数のpackageを統合して管理でき、その設定がこちら
 
@@ -12,7 +48,7 @@ pnpm-workspace.yaml
 ```bash
 packages:
   - "packages/*"
-```
+````
 
 ### 2: 各packageの初期化
 
