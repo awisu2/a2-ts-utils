@@ -16,3 +16,10 @@
 pnpm add radash date-fns
 yarn add radash date-fns
 ```
+
+## startup
+
+```bash
+pnpm install
+./scripts/bin.sh
+```

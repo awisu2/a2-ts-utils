@@ -20,8 +20,4 @@
       @apply font-bold;
     }
   }
-  .a2-big-font {
-      @apply text-[40px];
-      font-weight: bold !important;
-  }
 }
