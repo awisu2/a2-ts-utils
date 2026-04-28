@@ -1,6 +1,6 @@
 {
   "name": "@a2-ts-utils/style",
-  "version": "1.0.3",
+  "version": "26.4.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,8 @@
   "license": "ISC",
   "packageManager": "pnpm@10.33.0",
   "devDependencies": {
+    "@iconify/json": "^2.2.467",
+    "@iconify/tailwind4": "^1.2.3",
     "@tailwindcss/vite": "^4.2.4",
     "tailwindcss": "^4.2.4"
   },

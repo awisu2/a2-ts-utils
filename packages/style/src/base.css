@@ -1,23 +1,13 @@
 @reference "tailwindcss";
 
 @layer base {
-  .a2-contents {
-    html {
-      @apply text-[15px];
-    }
+  html,
+  body {
+    @apply size-full;
+  }
 
-    html,
-    body {
-      @apply size-full;
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      @apply font-bold;
-    }
+  /* todo: 汎用的ではない */
+  html {
+    @apply text-[15px];
   }
 }
