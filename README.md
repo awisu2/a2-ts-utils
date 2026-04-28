@@ -23,3 +23,7 @@ yarn add radash date-fns
 pnpm install
 ./scripts/bin.sh
 ```
+
+## Note
+
+- typeは　index.ts に記載しても .d.ts に出力されないため、いったん別のファイルを作って importしておく
