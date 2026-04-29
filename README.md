@@ -26,5 +26,7 @@ pnpm install
 
 ## Note
 
+- videoのサムネイルを取得するときは、表示がされてからにしたほうがいい seeked または loadeddata イベント後が良い
+  - seekedがベストだが、時間指定をしなかった場合発生しないので、loadeddata で初期フレームが表示されたタイミングとなる
 - type は index.ts に記載しても .d.ts に出力されない(rollupの仕様)ため、別のファイル(type.tsなど)に記載する
 - pacakge.jsonでdevendencyは記載できるが、最新のものが個別に欲しい場合などはそれぞれ個別取得(e.g. `yarn add`)しておく必要がある

@@ -33,7 +33,13 @@ export function getBlobAsync(
 ): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
-      blob ? resolve(blob) : reject(new Error("Failed to create blob"));
+      blob
+        ? resolve(blob)
+        : reject(
+            new Error(
+              'Failed to create blob. may need crossOrigin="anonymous"',
+            ),
+          );
     }, type);
   });
 }
