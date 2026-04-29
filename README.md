@@ -26,4 +26,5 @@ pnpm install
 
 ## Note
 
-- typeは　index.ts に記載しても .d.ts に出力されないため、いったん別のファイルを作って importしておく
+- type は index.ts に記載しても .d.ts に出力されない(rollupの仕様)ため、別のファイル(type.tsなど)に記載する
+- pacakge.jsonでdevendencyは記載できるが、最新のものが個別に欲しい場合などはそれぞれ個別取得(e.g. `yarn add`)しておく必要がある
