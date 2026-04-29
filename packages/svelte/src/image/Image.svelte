@@ -1,18 +1,36 @@
 <script lang="ts">
-  import { onLoaded, type Props } from "./image";
+  import {
+    type ImageProps,
+    type ImageBasicEvent,
+    type ImageCustomEvent,
+    onLoaded,
+  } from "./image";
 
-  const { src, opts, events }: Props = $props();
+  const { src, opts, events }: ImageProps = $props();
 
-  function onload(event: Event) {
-    const img = event.currentTarget as HTMLImageElement;
-    events?.onLoad?.(event, img);
-    onLoaded(img, event);
+  function convertEvent(ev: ImageBasicEvent): ImageCustomEvent {
+    return {
+      ...ev,
+      currentTarget: ev.currentTarget as HTMLImageElement,
+    };
   }
+  const eventHandle = (
+    fn?: (e: ImageCustomEvent) => void,
+    isOnload = false,
+  ): ((e: ImageBasicEvent) => void) | undefined => {
+    if (!fn) return undefined;
 
-  function onerror(event: Event) {
-    const img = event.currentTarget as HTMLImageElement;
-    events?.onError?.(event, img);
-  }
+    return (ev: ImageBasicEvent) => {
+      var customEvent = convertEvent(ev);
+      if (fn) fn(customEvent);
+      if (isOnload) onLoaded(customEvent);
+    };
+  };
 </script>
 
-<img {src} {...opts} {onload} {onerror} />
+<img
+  {src}
+  {...opts}
+  onload={eventHandle(events?.onload, true)}
+  onerror={eventHandle(events?.onerror)}
+/>
