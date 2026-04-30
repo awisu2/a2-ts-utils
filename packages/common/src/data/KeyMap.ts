@@ -9,7 +9,7 @@ export namespace KeyMap {
 // 基本思想としては, ファイラーアプリでの大量のファイル情報管理の補助としての利用を想定
 // mapを直接操作されてもよい設計で補助的な関数を追加している
 export abstract class KeyMap<T> {
-  public map: Map<string, T> = new Map();
+  private map: Map<string, T> = new Map();
 
   abstract getKey(data: T): string;
 
