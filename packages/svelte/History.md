@@ -3,6 +3,8 @@
 ## 26-04
 
 - 04-28
+  - Image.svelteの拡張方法を onload, onerror など通常のelementの関数に合わせた
+  - Video.svelteを追加
   - Image.svelte
     - moduleにsubscribeを追加
     - Propsなどをexport化
