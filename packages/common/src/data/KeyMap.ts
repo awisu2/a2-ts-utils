@@ -15,29 +15,45 @@ export abstract class KeyMap<T> {
 
   abstract isSame(a: T, b: T): boolean;
 
-  set(data: T, option?: KeyMap.SetOptions): void {
+  // return is updated
+  set(data: T, option?: KeyMap.SetOptions): boolean {
     const key = this.getKey(data);
 
     // validate before set =====
     const _data = this.map.get(key);
     if (_data) {
       if (this.isSame(_data, data)) {
-        return;
+        return false;
       }
     } else {
       if (option?.onlyExists) {
-        return;
+        return false;
       }
     }
 
     // set =====
     this.map.set(key, data);
+    return true;
   }
 
-  sets(datas: T[], option?: KeyMap.SetOptions): void {
+  // return updated datas
+  sets(datas: T[], option?: KeyMap.SetOptions): Map<string, T> {
+    let updates: Map<string, T> = new Map();
     for (const data of datas) {
-      this.set(data, option);
+      const isUpdated = this.set(data, option);
+      if (isUpdated) {
+        updates.set(this.getKey(data), data);
+      }
     }
+    return updates;
+  }
+
+  get(key: string): T | undefined {
+    return this.map.get(key);
+  }
+
+  clear(): void {
+    this.map.clear();
   }
 
   resets(datas: T[], option?: KeyMap.SetOptions): void {
@@ -54,6 +70,18 @@ export abstract class KeyMap<T> {
     return this.delete(key);
   }
 
+  values(): IterableIterator<T> {
+    return this.map.values();
+  }
+
+  entries(): IterableIterator<[string, T]> {
+    return this.map.entries();
+  }
+
+  keys(): IterableIterator<string> {
+    return this.map.keys();
+  }
+
   getArrayEntries(): [string, T][] {
     return Array.from(this.map.entries());
   }
@@ -64,5 +92,15 @@ export abstract class KeyMap<T> {
 
   getArrayKeys(): string[] {
     return Array.from(this.map.keys());
+  }
+
+  filter(filter: (data: T) => boolean): Map<string, T> {
+    let muchs: Map<string, T> = new Map();
+    for (const [key, data] of this.map.entries()) {
+      if (filter(data)) {
+        muchs.set(key, data);
+      }
+    }
+    return muchs;
   }
 }

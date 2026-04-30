@@ -19,8 +19,10 @@ export class DatasDebouncer<T> {
     });
   }
 
-  add(data: T): void {
-    this.queue.add(data);
+  add(datas: T[]): void {
+    for (const data of datas) {
+      this.queue.add(data);
+    }
     this.processor();
   }
 
