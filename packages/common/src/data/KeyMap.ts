@@ -15,6 +15,10 @@ export abstract class KeyMap<T> {
 
   abstract isSame(a: T, b: T): boolean;
 
+  constructor(map?: Map<string, T>) {
+    this.map = map ?? new Map();
+  }
+
   // return is updated
   set(data: T, option?: KeyMap.SetOptions): boolean {
     const key = this.getKey(data);
@@ -50,6 +54,10 @@ export abstract class KeyMap<T> {
 
   get(key: string): T | undefined {
     return this.map.get(key);
+  }
+
+  getMap(): Map<string, T> {
+    return this.map;
   }
 
   clear(): void {

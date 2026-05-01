@@ -5,6 +5,7 @@
 - 05-01
   - DataObserverを追加
     - subscribe時に値を返却しない、シンプルな更新通知
+  - KeyMapでcloneがしやすいように関数追加
 
 ## 26-04
 
