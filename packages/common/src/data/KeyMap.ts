@@ -111,4 +111,8 @@ export abstract class KeyMap<T> {
     }
     return muchs;
   }
+
+  get size(): number {
+    return this.map.size;
+  }
 }
