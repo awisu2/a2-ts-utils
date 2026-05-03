@@ -1,6 +1,6 @@
 {
   "name": "@a2-ts-utils/tauri",
-  "version": "1.0.2",
+  "version": "26.5.1",
   "description": "",
   "main": "index.js",
   "scripts": {
