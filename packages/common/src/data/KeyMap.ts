@@ -15,6 +15,10 @@ export abstract class KeyMap<T> {
 
   abstract isSame(a: T, b: T): boolean;
 
+  get size(): number {
+    return this.map.size;
+  }
+
   constructor(map?: Map<string, T>) {
     this.map = map ?? new Map();
   }
@@ -112,7 +116,12 @@ export abstract class KeyMap<T> {
     return muchs;
   }
 
-  get size(): number {
-    return this.map.size;
+  has(key: string): boolean {
+    return this.map.has(key);
+  }
+
+  hasData(data: T): boolean {
+    const key = this.getKey(data);
+    return this.map.has(key);
   }
 }

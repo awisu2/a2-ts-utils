@@ -3,6 +3,7 @@
 ## 26-05
 
 - 05-03(sun)
+  - KeyMap added has() and hasData()
   - added ConcurentRunnner
   - added Queue
 - 05-01(fri)
