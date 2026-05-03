@@ -3,6 +3,8 @@
 ## 26-05
 
 - 05-04(mon)
+  - added log.ts and groupLog.ts
+    - for simple logging
   - removed namespace
 - 05-03(sun)
   - KeyMap added has() and hasData()
