@@ -1,9 +1,7 @@
 // classと同名のnamespaceで宣言することで、追加オプションをグループ化
-export namespace KeyMap {
-  export type SetOptions = {
-    onlyExists?: boolean;
-  };
-}
+export type KeyMapSetOptions = {
+  onlyExists?: boolean;
+};
 
 // Map を補助するクラス =====
 // 基本思想としては, ファイラーアプリでの大量のファイル情報管理の補助としての利用を想定
@@ -24,7 +22,7 @@ export abstract class KeyMap<T> {
   }
 
   // return is updated
-  set(data: T, option?: KeyMap.SetOptions): boolean {
+  set(data: T, option?: KeyMapSetOptions): boolean {
     const key = this.getKey(data);
 
     // validate before set =====
@@ -45,7 +43,7 @@ export abstract class KeyMap<T> {
   }
 
   // return updated datas
-  sets(datas: T[], option?: KeyMap.SetOptions): Map<string, T> {
+  sets(datas: T[], option?: KeyMapSetOptions): Map<string, T> {
     let updates: Map<string, T> = new Map();
     for (const data of datas) {
       const isUpdated = this.set(data, option);
@@ -68,7 +66,7 @@ export abstract class KeyMap<T> {
     this.map.clear();
   }
 
-  resets(datas: T[], option?: KeyMap.SetOptions): void {
+  resets(datas: T[], option?: KeyMapSetOptions): void {
     this.map.clear();
     this.sets(datas, option);
   }

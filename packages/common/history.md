@@ -2,6 +2,8 @@
 
 ## 26-05
 
+- 05-04(mon)
+  - removed namespace
 - 05-03(sun)
   - KeyMap added has() and hasData()
   - added ConcurentRunnner
