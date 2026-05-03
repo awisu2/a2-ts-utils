@@ -1,4 +1,4 @@
-import { Queue } from "../sys/Queue";
+import { Queue } from "../sys/queue";
 
 // ConcurrentRunnner =====
 // run tasks concurrently with setted number.
