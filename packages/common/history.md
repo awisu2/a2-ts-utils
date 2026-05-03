@@ -2,7 +2,10 @@
 
 ## 26-05
 
-- 05-01
+- 05-03(sun)
+  - added ConcurentRunnner
+  - added Queue
+- 05-01(fri)
   - DataObserverを追加
     - subscribe時に値を返却しない、シンプルな更新通知
   - KeyMapでcloneがしやすいように関数追加
