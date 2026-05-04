@@ -3,6 +3,7 @@
 ## 26-05
 
 - 05-04(mon)
+  - added simple log, glog, Logger
   - added log.ts and groupLog.ts
     - for simple logging
   - removed namespace
