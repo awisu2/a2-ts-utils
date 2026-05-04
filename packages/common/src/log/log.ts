@@ -18,11 +18,11 @@ const logHierarchy = {
 const canLog = (lowLevel: LogLevel, targetLevel: LogLevel): boolean => {
   return logHierarchy[targetLevel] >= logHierarchy[lowLevel];
 };
-type Log = (...args: any[]) => void;
-type GLog = (groupName: string, ...args: any[]) => void;
+type Log = (...args: unknown[]) => void;
+type GLog = (groupName: string, ...args: unknown[]) => void;
 
 const getLogger = (level: LogLevel) => {
-  return (...args: any[]) => {
+  return (...args: unknown[]) => {
     (console[level] || console.log)(...args);
   };
 };
@@ -31,7 +31,7 @@ const getGroupLogger = (
   logLevel: LogLevel,
   isCollapsed: boolean = false,
 ): GLog => {
-  return (groupName: string, ...args: any[]) => {
+  return (groupName: string, ...args: unknown[]) => {
     let isStarted = false;
     try {
       if (isCollapsed) {
@@ -53,15 +53,15 @@ const getGroupLogger = (
   };
 };
 
-// filter loggers by global log level =====
-let logLevel: LogLevel = LogLevel.trace;
+// filter loggers by setted level =====
+let thresholdLevel: LogLevel = LogLevel.trace;
 
-export const getLogLevel = () => {
-  return logLevel;
+export const getThresholdLevel = () => {
+  return thresholdLevel;
 };
 
-export const setLogLevel = (level: LogLevel) => {
-  logLevel = level;
+export const setThresholdLevel = (level: LogLevel) => {
+  thresholdLevel = level;
   filterLoggers();
 };
 
@@ -81,12 +81,14 @@ const setForceLoggers = () => {
   }
 };
 
+const emptyLogger = () => {};
+
 const filterLoggers = () => {
   for (const level of Object.values(LogLevel)) {
-    const active = canLog(logLevel, level);
-    _log[level] = active ? _log[level] : () => {};
-    _glog[level] = active ? _glog[level] : () => {};
-    _clog[level] = active ? _clog[level] : () => {};
+    const active = canLog(thresholdLevel, level);
+    _log[level] = active ? _logF[level] : emptyLogger;
+    _glog[level] = active ? _glogF[level] : emptyLogger;
+    _clog[level] = active ? _clogF[level] : emptyLogger;
   }
 };
 
