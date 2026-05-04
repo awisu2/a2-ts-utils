@@ -15,38 +15,98 @@ const logHierarchy = {
   [LogLevel.error]: 4,
 };
 
-export const canLog = (lowLevel: LogLevel, targetLevel: LogLevel): boolean => {
+const canLog = (lowLevel: LogLevel, targetLevel: LogLevel): boolean => {
   return logHierarchy[targetLevel] >= logHierarchy[lowLevel];
 };
-export type Log = (...args: any[]) => void;
+type Log = (...args: any[]) => void;
+type GLog = (groupName: string, ...args: any[]) => void;
 
-export let globalLogLevel: LogLevel = LogLevel.trace;
-
-export const setGlobalLogLevel = (level: LogLevel) => {
-  globalLogLevel = level;
+const getLogger = (level: LogLevel) => {
+  return (...args: any[]) => {
+    (console[level] || console.log)(...args);
+  };
 };
 
-export const logFunc = (level: LogLevel, isAllow: boolean = false) => {
-  return (...args: any[]) => {
-    if (isAllow || canLog(globalLogLevel, level)) {
-      (console[level] || console.log)(...args);
-    } else {
-      return () => {};
+const getGroupLogger = (
+  logLevel: LogLevel,
+  isCollapsed: boolean = false,
+): GLog => {
+  return (groupName: string, ...args: any[]) => {
+    let isStarted = false;
+    try {
+      if (isCollapsed) {
+        console.groupCollapsed?.(groupName);
+      } else {
+        console.group?.(groupName);
+      }
+      isStarted = true;
+
+      const logFn = console[logLevel] || console.log;
+      logFn(...args);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      if (isStarted) {
+        console.groupEnd?.();
+      }
     }
   };
 };
 
-export const logInfo: Log = logFunc(LogLevel.info);
-export const logDebug: Log = logFunc(LogLevel.debug);
-export const logWarn: Log = logFunc(LogLevel.warn);
-export const logError: Log = logFunc(LogLevel.error);
-export const logTrace: Log = logFunc(LogLevel.trace);
+// filter loggers by global log level =====
+let logLevel: LogLevel = LogLevel.trace;
 
-export const logInfoF: Log = logFunc(LogLevel.info, true);
-export const logDebugF: Log = logFunc(LogLevel.debug, true);
-export const logWarnF: Log = logFunc(LogLevel.warn, true);
-export const logErrorF: Log = logFunc(LogLevel.error, true);
-export const logTraceF: Log = logFunc(LogLevel.trace, true);
+export const getLogLevel = () => {
+  return logLevel;
+};
 
-// alias =====
-export const log = logInfo;
+export const setLogLevel = (level: LogLevel) => {
+  logLevel = level;
+  filterLoggers();
+};
+
+const _log: Record<LogLevel, Log> = {} as any;
+const _glog: Record<LogLevel, GLog> = {} as any;
+const _clog: Record<LogLevel, GLog> = {} as any;
+
+const _logF: Record<LogLevel, Log> = {} as any;
+const _glogF: Record<LogLevel, GLog> = {} as any;
+const _clogF: Record<LogLevel, GLog> = {} as any;
+
+const setForceLoggers = () => {
+  for (const level of Object.values(LogLevel)) {
+    _logF[level] = getLogger(level);
+    _glogF[level] = getGroupLogger(level);
+    _clogF[level] = getGroupLogger(level, true);
+  }
+};
+
+const filterLoggers = () => {
+  for (const level of Object.values(LogLevel)) {
+    const active = canLog(logLevel, level);
+    _log[level] = active ? _log[level] : () => {};
+    _glog[level] = active ? _glog[level] : () => {};
+    _clog[level] = active ? _clog[level] : () => {};
+  }
+};
+
+// initialize =====
+setForceLoggers();
+filterLoggers();
+
+export const log: Record<LogLevel, Log> = {} as any;
+export const logF: Record<LogLevel, Log> = {} as any;
+export const glog: Record<LogLevel, GLog> = {} as any;
+export const glogF: Record<LogLevel, GLog> = {} as any;
+export const clog: Record<LogLevel, GLog> = {} as any;
+export const clogF: Record<LogLevel, GLog> = {} as any;
+
+for (const level of Object.values(LogLevel)) {
+  log[level] = (...args) => _log[level](...args);
+  glog[level] = (name, ...args) => _glog[level](name, ...args);
+  clog[level] = (name, ...args) => _clog[level](name, ...args);
+
+  logF[level] = (...args) => _logF[level](...args);
+  glogF[level] = (name, ...args) => _glogF[level](name, ...args);
+  clogF[level] = (name, ...args) => _clogF[level](name, ...args);
+}

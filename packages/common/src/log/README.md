@@ -7,16 +7,16 @@ This library focus simply use default log system
 
 ```ts
 // console.log("hello")
-log("hello", ...);
+log.info("hello", ...);
 
 // with group (indented log)
-glog("myGroup", "hello", ...);
-clog("myGroup", "hello", ...); // output with cloase(browser)
+glog.info("myGroup", "hello", ...);
+clog.info("myGroup", "hello", ...); // output with cloase(browser)
 
 // with level (Debug/Info/Warn/Error/Trace)
-logWarn("hello");
-glogError("myGroup", "hello", ...);
-clogTrace("myGroup", "hello", ...);
+log.warn("hello");
+glog.error("myGroup", "hello", ...);
+clog.trace("myGroup", "hello", ...);
 ```
 
 ## loglevel settings
@@ -24,9 +24,9 @@ clogTrace("myGroup", "hello", ...);
 we can set low level for logging.
 
 ```ts
-gloalLogLevel = LogLevel.info;
-logDebug("not logging");
+setLogLevel(LogLevel.info);
+log.debug("not logging");
 
 // if some function want log tempolary, we can 'F' each function
-logDebugF("force debug");
+logF.debug("force debug");
 ```
