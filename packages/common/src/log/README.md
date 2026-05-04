@@ -18,3 +18,15 @@ logWarn("hello");
 glogError("myGroup", "hello", ...);
 clogTrace("myGroup", "hello", ...);
 ```
+
+## loglevel settings
+
+we can set low level for logging.
+
+```ts
+gloalLogLevel = LogLevel.info;
+logDebug("not logging");
+
+// if some function want log tempolary, we can 'F' each function
+logDebugF("force debug");
+```

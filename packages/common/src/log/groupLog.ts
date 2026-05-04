@@ -1,12 +1,19 @@
 // group log
 // e.g. glog("myGroup", yourdata...);
-import { LogLevel } from "./log";
+import { canLog, LogLevel, globalLogLevel } from "./log";
+
+export type Glog = (groupName: string, ...args: any[]) => void;
 
 export const grouplogger = (
   isCollapsed: boolean = false,
   logLevel: LogLevel,
-): ((groupName: string, ...args: any[]) => void) => {
+  isAllow: boolean = false,
+): Glog => {
   return (groupName: string, ...args: any[]) => {
+    if (!isAllow && !canLog(globalLogLevel, logLevel)) {
+      return;
+    }
+
     let isStarted = false;
     try {
       if (isCollapsed) {
@@ -29,31 +36,30 @@ export const grouplogger = (
 };
 
 // group log =====
-export const grouplogInfo = grouplogger(false, LogLevel.info);
-export const grouplogDebug = grouplogger(false, LogLevel.debug);
-export const grouplogWarn = grouplogger(false, LogLevel.warn);
-export const grouplogError = grouplogger(false, LogLevel.error);
-export const grouplogTrace = grouplogger(false, LogLevel.trace);
+export const glogInfo = grouplogger(false, LogLevel.info);
+export const glogDebug = grouplogger(false, LogLevel.debug);
+export const glogWarn = grouplogger(false, LogLevel.warn);
+export const glogError = grouplogger(false, LogLevel.error);
+export const glogTrace = grouplogger(false, LogLevel.trace);
+export const clogInfo = grouplogger(true, LogLevel.info);
+export const clogDebug = grouplogger(true, LogLevel.debug);
+export const clogWarn = grouplogger(true, LogLevel.warn);
+export const clogError = grouplogger(true, LogLevel.error);
+export const clogTrace = grouplogger(true, LogLevel.trace);
 
-// collapsed group log =====
-export const collapselogInfo = grouplogger(true, LogLevel.info);
-export const collapselogDebug = grouplogger(true, LogLevel.debug);
-export const collapselogWarn = grouplogger(true, LogLevel.warn);
-export const collapselogError = grouplogger(true, LogLevel.error);
-export const collapselogTrace = grouplogger(true, LogLevel.trace);
+export const glog = glogInfo;
+export const clog = clogInfo;
 
-// alias =====
-export const glog = grouplogInfo;
-export const clog = collapselogInfo;
+export const glogInfoF = grouplogger(false, LogLevel.info, true);
+export const glogDebugF = grouplogger(false, LogLevel.debug, true);
+export const glogWarnF = grouplogger(false, LogLevel.warn, true);
+export const glogErrorF = grouplogger(false, LogLevel.error, true);
+export const glogTraceF = grouplogger(false, LogLevel.trace, true);
+export const clogInfoF = grouplogger(true, LogLevel.info, true);
+export const clogDebugF = grouplogger(true, LogLevel.debug, true);
+export const clogWarnF = grouplogger(true, LogLevel.warn, true);
+export const clogErrorF = grouplogger(true, LogLevel.error, true);
+export const clogTraceF = grouplogger(true, LogLevel.trace, true);
 
-export const glogInfo = grouplogInfo;
-export const glogDebug = grouplogDebug;
-export const glogWarn = grouplogWarn;
-export const glogError = grouplogError;
-export const glogTrace = grouplogTrace;
-
-export const clogInfo = collapselogInfo;
-export const clogDebug = collapselogDebug;
-export const clogWarn = collapselogWarn;
-export const clogError = collapselogError;
-export const clogTrace = collapselogTrace;
+export const glogF = glogInfoF;
+export const clogF = clogInfoF;
