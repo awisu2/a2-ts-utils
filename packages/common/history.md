@@ -5,6 +5,7 @@
 - 05-05(tue)
   - loggerの実装を修正
     - 毎回 logレベルチェックしているのを、事前にチェック済みのものを参照するように変更
+    - prefixedLog() を追加してみた
 - 05-04(mon)
   - added simple log, glog, Logger
   - added log.ts and groupLog.ts

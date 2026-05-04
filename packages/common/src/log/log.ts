@@ -112,3 +112,11 @@ for (const level of Object.values(LogLevel)) {
   glogF[level] = (name, ...args) => _glogF[level](name, ...args);
   clogF[level] = (name, ...args) => _clogF[level](name, ...args);
 }
+
+// just try functions =====
+// generate prefixed log function
+export const prefixedLog = (logger: Log, prefix: unknown): Log => {
+  return (...args: unknown[]) => {
+    logger(prefix, ...args);
+  };
+};
