@@ -6,6 +6,8 @@
   - loggerの実装を修正
     - 毎回 logレベルチェックしているのを、事前にチェック済みのものを参照するように変更
     - prefixedLog() を追加してみた
+    - Fをつけて強制出力はやめた。一時的でいいならログレベルを上げればいい
+      - [] 追加するにしても logF ではなく log.infoF としたい
 - 05-04(mon)
   - added simple log, glog, Logger
   - added log.ts and groupLog.ts

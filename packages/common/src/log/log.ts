@@ -97,20 +97,13 @@ setForceLoggers();
 filterLoggers();
 
 export const log: Record<LogLevel, Log> = {} as any;
-export const logF: Record<LogLevel, Log> = {} as any;
 export const glog: Record<LogLevel, GLog> = {} as any;
-export const glogF: Record<LogLevel, GLog> = {} as any;
 export const clog: Record<LogLevel, GLog> = {} as any;
-export const clogF: Record<LogLevel, GLog> = {} as any;
 
 for (const level of Object.values(LogLevel)) {
   log[level] = (...args) => _log[level](...args);
   glog[level] = (name, ...args) => _glog[level](name, ...args);
   clog[level] = (name, ...args) => _clog[level](name, ...args);
-
-  logF[level] = (...args) => _logF[level](...args);
-  glogF[level] = (name, ...args) => _glogF[level](name, ...args);
-  clogF[level] = (name, ...args) => _clogF[level](name, ...args);
 }
 
 // just try functions =====

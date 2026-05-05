@@ -26,7 +26,4 @@ we can set low level for logging.
 ```ts
 setLogLevel(LogLevel.info);
 log.debug("not logging");
-
-// if some function want log tempolary, we can 'F' each function
-logF.debug("force debug");
 ```

@@ -4,6 +4,10 @@ import { Queue } from "../sys";
 // run tasks concurrently with setted number.
 // It has multiple priority queues. e.g. if difference priority tasks we have, we can set specific priority and can use that.
 // please see README.md for details
+type ConcurrentRunnerOptions = {
+  priority?: number;
+  setToHigh?: boolean;
+};
 export class ConcurrentRunner {
   private _priorityQueues: Map<number, Queue<() => Promise<void>>> = new Map();
   private _concurrency: number;
@@ -16,19 +20,22 @@ export class ConcurrentRunner {
 
   private _options = {
     autoRemoveEmptyQueue: true,
+    verbose: false,
   };
 
   constructor(
     concurrency: number = 1,
-    opts: { autoRemoveEmptyQueue?: boolean } = {},
+    opts: { autoRemoveEmptyQueue?: boolean; verbose?: boolean } = {},
   ) {
     this._options = { ...this._options, ...opts };
     this._concurrency = concurrency;
+
+    this.debugLog(`initialized`, { concurrency, options: this._options });
   }
 
-  static defaultAddOptions = {
-    priority: 0,
-    setToHigh: false,
+  static defaultAddOptions: ConcurrentRunnerOptions = {
+    priority: undefined,
+    setToHigh: true,
   };
 
   get highstPriority(): number {
@@ -39,20 +46,18 @@ export class ConcurrentRunner {
     return this._state;
   }
 
-  add(
-    task: () => Promise<void>,
-    opts: {
-      priority?: number;
-      setToHigh?: boolean;
-    } = {},
-  ) {
+  add(task: () => Promise<void>, opts: ConcurrentRunnerOptions = {}) {
     const _opts = { ...ConcurrentRunner.defaultAddOptions, ...opts };
 
     // enque =====
-    const priority = _opts.setToHigh ? this.highstPriority + 1 : _opts.priority;
+    // priorityがセットされていたら優先して利用、なければsetToHighの値で決定する
+    const priority =
+      _opts.priority ?? (_opts.setToHigh ? this.highstPriority : 0);
     const queue = this.getOrCreateQueue(priority);
     queue.enqueue(task);
     this._state.pending++;
+
+    this.debugLog(`add task`, { priority, setToHigh: _opts.setToHigh });
 
     // invoke =====
     this.run();
@@ -101,22 +106,30 @@ export class ConcurrentRunner {
     for (let i = 0; i < this._priorities.length; i++) {
       const priority = this._priorities[i];
       const queue = this._priorityQueues.get(priority);
+      this.debugLog("getNextTask", { i, priority, queue });
+
       if (!queue) {
+        this.debugLog(`queue not found for priority`);
         continue;
       }
 
       const task = queue.dequeue();
-      this._state.pending--;
 
       // remove queue if empty but highest priority task may be working, so check empty before dequeue
-      if (this._options.autoRemoveEmptyQueue) {
+      if (queue.size === 0 && this._options.autoRemoveEmptyQueue) {
         var isHighestOrLower = i == 0 || priority == 0;
-        if (queue.size === 0 && !isHighestOrLower) {
+        if (!isHighestOrLower) {
+          this.debugLog(`queue deleted for priority`);
           this.DeleteQueue(priority);
           i--;
-          continue;
         }
       }
+
+      if (!task) {
+        this.debugLog(`queue is empty for priority`);
+        continue;
+      }
+      this._state.pending--;
 
       return task;
     }
@@ -131,9 +144,13 @@ export class ConcurrentRunner {
     while (this.canNext()) {
       const task = this.getNextTask();
       if (task) {
+        this.debugLog("run", `run task`);
+
         // async call for concurrent execution
         this._state.running++; // count up before async call
         this.innerRunAsync(task);
+      } else {
+        this.debugLog("run", `no task to run`);
       }
     }
   }
@@ -148,6 +165,20 @@ export class ConcurrentRunner {
 
       // resume next task
       this.run();
+    }
+  }
+
+  private debugLog(...args: unknown[]) {
+    if (this._options.verbose) {
+      const quesueSizes = this._priorities.map((p) => {
+        const q = this._priorityQueues.get(p);
+        return { priority: p, size: q ? q.size : 0 };
+      });
+      console.debug("[ConcurrentRunner]", ...args, {
+        state: this.state,
+        quesueSizes,
+        priorityLength: this._priorities.length,
+      });
     }
   }
 }
