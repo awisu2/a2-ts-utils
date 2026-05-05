@@ -1,15 +1,15 @@
 import { ImageMimeType, Size } from "@a2-ts-utils/common/type";
-import { getElementSize, getSize as getSizeImage } from "../image/image";
+import { getSizeFromElement } from "../image/image";
 
 // elementからCanvasを取得
 // newSizeを指定した場合は、Canvasのサイズを変更して描画する
-export function elementToCanvas2d(
+export const getCanvas2dFromElement = (
   element: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement,
   newSize?: Size,
-): HTMLCanvasElement {
+): HTMLCanvasElement => {
   const canvas = document.createElement("canvas");
 
-  const _size = newSize ?? getElementSize(element);
+  const _size = newSize ?? getSizeFromElement(element);
   canvas.width = Math.floor(_size.width);
   canvas.height = Math.floor(_size.height);
 
@@ -23,14 +23,16 @@ export function elementToCanvas2d(
   ctx.drawImage(element, 0, 0, canvas.width, canvas.height);
 
   return canvas;
-}
+};
+
+export const intoElementToCanvas2d = getCanvas2dFromElement;
 
 // Blob: Binary Large Object
 // canvas > Blob > buffer > Uint8Array
-export function getBlobAsync(
+export const getBlobFromCanvasAsync = (
   canvas: HTMLCanvasElement,
   type: ImageMimeType = ImageMimeType.JPEG,
-): Promise<Blob> {
+): Promise<Blob> => {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
       blob
@@ -42,17 +44,25 @@ export function getBlobAsync(
           );
     }, type);
   });
-}
+};
 
-export async function blobToBytesAsync(blob: Blob): Promise<Uint8Array> {
+export const intoCanvasToBlobAsync = getBlobFromCanvasAsync;
+
+export const getBytesFromBlobAsync = async (
+  blob: Blob,
+): Promise<Uint8Array> => {
   const buffer = await blob.arrayBuffer();
   return new Uint8Array(buffer);
-}
+};
 
-export async function getBytesAsync(
+export const intoBlobToBytesAsync = getBytesFromBlobAsync;
+
+export const getBytesFromCanvasElementAsync = async (
   canvas: HTMLCanvasElement,
   type: ImageMimeType = ImageMimeType.JPEG,
-): Promise<Uint8Array> {
-  const blob = await getBlobAsync(canvas, type);
-  return blobToBytesAsync(blob);
-}
+): Promise<Uint8Array> => {
+  const blob = await getBlobFromCanvasAsync(canvas, type);
+  return getBytesFromBlobAsync(blob);
+};
+
+export const intoCanvasElementToBytesAsync = getBytesFromCanvasElementAsync;

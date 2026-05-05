@@ -1,33 +1,40 @@
 import { Size, ImageMimeType } from "@a2-ts-utils/common/type";
 import {
-  blobToBytesAsync,
-  elementToCanvas2d,
-  getBlobAsync,
+  getBytesFromBlobAsync,
+  getCanvas2dFromElement,
+  getBlobFromCanvasAsync,
 } from "../canvas/convert";
 import { bytesToBase64 } from "@a2-ts-utils/common/byte";
 
-export function getElementImageBlobAsync(
+//
+export const getBlobFromEleAsync = (
   element: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement,
   type: ImageMimeType = ImageMimeType.JPEG,
   newSize?: Size,
-): Promise<Blob> {
-  const canvas = elementToCanvas2d(element, newSize);
-  return getBlobAsync(canvas, type);
-}
+): Promise<Blob> => {
+  const canvas = getCanvas2dFromElement(element, newSize);
+  return getBlobFromCanvasAsync(canvas, type);
+};
 
-export async function getElementImageBytesAsync(
+export const intoEleToBlobAsync = getBlobFromEleAsync;
+
+export const getBytesFromEleAsync = async (
   element: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement,
   type: ImageMimeType = ImageMimeType.JPEG,
   newSize?: Size,
-): Promise<Uint8Array> {
-  var blob = await getBlobAsync(elementToCanvas2d(element, newSize), type);
-  return blobToBytesAsync(blob);
-}
+): Promise<Uint8Array> => {
+  var blob = await getBlobFromEleAsync(element, type, newSize);
+  return getBytesFromBlobAsync(blob);
+};
 
-export function bytesToBase64Src(
+export const intoEleToBytesAsync = getBytesFromEleAsync;
+
+export const getBase64SrcFromBytes = (
   bytes: Uint8Array,
   type: ImageMimeType = ImageMimeType.JPEG,
-): string {
+): string => {
   const base64String = bytesToBase64(bytes);
   return `data:${type};base64,${base64String}`;
-}
+};
+
+export const intoBytesToBase64Src = getBase64SrcFromBytes;

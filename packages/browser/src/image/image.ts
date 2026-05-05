@@ -1,6 +1,6 @@
 import { Size } from "@a2-ts-utils/common/type";
-import { getSize as getSizeCanvas } from "../canvas/utils";
-import { getSize as getSizeVideo } from "../video/utils";
+import { getSizeFromCanvasElement } from "../canvas/utils";
+import { getSizeFromVideoElement } from "../video/utils";
 
 export type ImageInfo = {
   src: string;
@@ -12,7 +12,9 @@ export type ImageInfo = {
   height: number;
 };
 
-export function getImageInfo(element: HTMLImageElement): ImageInfo {
+export function getImageInfoFromImageElement(
+  element: HTMLImageElement,
+): ImageInfo {
   return {
     src: element.src,
     naturalWidth: element.naturalWidth,
@@ -22,22 +24,22 @@ export function getImageInfo(element: HTMLImageElement): ImageInfo {
   };
 }
 
-export function getSize(element: HTMLImageElement): Size {
+export function getSizeFromImageElement(element: HTMLImageElement): Size {
   return {
     width: element.naturalWidth,
     height: element.naturalHeight,
   };
 }
 
-export function getElementSize(
+export function getSizeFromElement(
   element: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement,
 ): Size {
   if (element instanceof HTMLVideoElement) {
-    return getSizeVideo(element);
+    return getSizeFromVideoElement(element);
   } else if (element instanceof HTMLImageElement) {
-    return getSize(element);
+    return getSizeFromImageElement(element);
   } else if (element instanceof HTMLCanvasElement) {
-    return getSizeCanvas(element);
+    return getSizeFromCanvasElement(element);
   }
   throw new Error("Unsupported element type");
 }

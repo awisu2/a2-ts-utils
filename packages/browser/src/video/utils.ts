@@ -11,7 +11,9 @@ export type VideoInfo = Size & {
   defaultPlaybackRate: number;
 };
 
-export function getVideoInfo(videoElement: HTMLVideoElement): VideoInfo {
+export function getVideoInfoFromVideoElement(
+  videoElement: HTMLVideoElement,
+): VideoInfo {
   return {
     width: videoElement.videoWidth,
     height: videoElement.videoHeight,
@@ -26,7 +28,7 @@ export function getVideoInfo(videoElement: HTMLVideoElement): VideoInfo {
   };
 }
 
-export function getSize(videoElement: HTMLVideoElement): Size {
+export function getSizeFromVideoElement(videoElement: HTMLVideoElement): Size {
   return {
     width: videoElement.videoWidth,
     height: videoElement.videoHeight,
