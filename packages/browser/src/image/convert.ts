@@ -7,7 +7,7 @@ import {
 import { bytesToBase64 } from "@a2-ts-utils/common/byte";
 
 //
-export const getBlobFromEleAsync = (
+export const getBlobFromElementAsync = (
   element: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement,
   type: ImageMimeType = ImageMimeType.JPEG,
   newSize?: Size,
@@ -16,18 +16,18 @@ export const getBlobFromEleAsync = (
   return getBlobFromCanvasAsync(canvas, type);
 };
 
-export const intoEleToBlobAsync = getBlobFromEleAsync;
+export const intoElementToBlobAsync = getBlobFromElementAsync;
 
-export const getBytesFromEleAsync = async (
+export const getBytesFromElementAsync = async (
   element: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement,
   type: ImageMimeType = ImageMimeType.JPEG,
   newSize?: Size,
 ): Promise<Uint8Array> => {
-  var blob = await getBlobFromEleAsync(element, type, newSize);
+  var blob = await getBlobFromElementAsync(element, type, newSize);
   return getBytesFromBlobAsync(blob);
 };
 
-export const intoEleToBytesAsync = getBytesFromEleAsync;
+export const intoElementToBytesAsync = getBytesFromElementAsync;
 
 export const getBase64SrcFromBytes = (
   bytes: Uint8Array,
