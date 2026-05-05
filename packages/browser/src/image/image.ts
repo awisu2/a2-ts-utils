@@ -12,9 +12,9 @@ export type ImageInfo = {
   height: number;
 };
 
-export function getImageInfoFromImageElement(
+export const getImageInfoFromImageElement = (
   element: HTMLImageElement,
-): ImageInfo {
+): ImageInfo => {
   return {
     src: element.src,
     naturalWidth: element.naturalWidth,
@@ -22,18 +22,18 @@ export function getImageInfoFromImageElement(
     width: element.width,
     height: element.height,
   };
-}
+};
 
-export function getSizeFromImageElement(element: HTMLImageElement): Size {
+export const getSizeFromImageElement = (element: HTMLImageElement): Size => {
   return {
     width: element.naturalWidth,
     height: element.naturalHeight,
   };
-}
+};
 
-export function getSizeFromElement(
+export const getSizeFromElement = (
   element: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement,
-): Size {
+): Size => {
   if (element instanceof HTMLVideoElement) {
     return getSizeFromVideoElement(element);
   } else if (element instanceof HTMLImageElement) {
@@ -42,4 +42,26 @@ export function getSizeFromElement(
     return getSizeFromCanvasElement(element);
   }
   throw new Error("Unsupported element type");
-}
+};
+
+export const getImageElementAsync = (
+  src: string,
+  opt: { isAnnonymous?: boolean } = {},
+): Promise<HTMLImageElement> => {
+  const _opt = {
+    isAnnonymous: false,
+    ...opt,
+  };
+
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = (err) => reject(err);
+
+    if (_opt.isAnnonymous) {
+      img.crossOrigin = "anonymous";
+    }
+
+    img.src = src;
+  });
+};
