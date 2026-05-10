@@ -1,5 +1,6 @@
 // Data notification system
 export class DataObserver<T> {
+  // Note: use Array for simple manage insted of Set.
   private subscribers: ((data: T) => void)[] = [];
   private latestData: T;
 
@@ -23,20 +24,23 @@ export class DataObserver<T> {
     }
   }
 
-  next(data: T) {
-    this.latestData = data;
-    const _subscribers = [...this.subscribers];
-    for (const subscriber of _subscribers) {
-      subscriber(data);
-    }
-  }
-
-  set data(data: T) {
+  // set data without notify.
+  set(data: T) {
     this.latestData = data;
   }
 
   // Not response data when subscribe. because this class purpose is to notify data update.
-  getLatest(): T {
+  get(): T {
     return this.latestData;
+  }
+
+  next(data: T) {
+    this.set(data);
+
+    // notify =====
+    const _subscribers = [...this.subscribers];
+    for (const subscriber of _subscribers) {
+      subscriber(data);
+    }
   }
 }
