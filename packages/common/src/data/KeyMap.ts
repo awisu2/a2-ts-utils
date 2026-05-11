@@ -1,3 +1,5 @@
+import { mapFilter } from "./mapUtil";
+
 // classと同名のnamespaceで宣言することで、追加オプションをグループ化
 export type KeyMapSetOptions = {
   onlyExists?: boolean;
@@ -11,7 +13,7 @@ export abstract class KeyMap<T> {
 
   abstract getKey(data: T): string;
 
-  abstract isSame(a: T, b: T): boolean;
+  abstract canUpdate(a: T, b: T): boolean;
 
   get size(): number {
     return this.map.size;
@@ -28,7 +30,7 @@ export abstract class KeyMap<T> {
     // validate before set =====
     const _data = this.map.get(key);
     if (_data) {
-      if (this.isSame(_data, data)) {
+      if (!this.canUpdate(_data, data)) {
         return false;
       }
     } else {
@@ -54,12 +56,12 @@ export abstract class KeyMap<T> {
     return updates;
   }
 
-  get(key: string): T | undefined {
-    return this.map.get(key);
-  }
-
   getMap(): Map<string, T> {
     return this.map;
+  }
+
+  get(key: string): T | undefined {
+    return this.map.get(key);
   }
 
   clear(): void {
@@ -104,14 +106,9 @@ export abstract class KeyMap<T> {
     return Array.from(this.map.keys());
   }
 
-  filter(filter: (data: T) => boolean): Map<string, T> {
-    let muchs: Map<string, T> = new Map();
-    for (const [key, data] of this.map.entries()) {
-      if (filter(data)) {
-        muchs.set(key, data);
-      }
-    }
-    return muchs;
+  // Map の filter機能拡張
+  filter(filter: (key: string, data: T) => boolean): Map<string, T> {
+    return mapFilter(this.map, (key, data) => filter(key, data));
   }
 
   has(key: string): boolean {
