@@ -2,6 +2,8 @@
 
 ## 26-05
 
+- 05-16(sat)
+  - add KeyMapUtil.ts
 - 05-06(wed)
   - logにF付きの関数を追加
     - prefixedLogのprefixを複数指定可能に対応
