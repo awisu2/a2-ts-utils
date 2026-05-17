@@ -1,6 +1,6 @@
 {
   "name": "@a2-ts-utils/common",
-  "version": "26.5.42",
+  "version": "26.5.44",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -1,3 +1,5 @@
+import { MapUtil } from "./mapUtil";
+
 export class KeyMap<T> extends Map<string, T> {}
 
 export type KeyMapUtilSetsOptions = {
