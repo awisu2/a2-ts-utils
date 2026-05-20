@@ -5,7 +5,7 @@ import {
   getBlobFromCanvasAsync,
 } from "../canvas/convert";
 import { bytesToBase64 } from "@a2-ts-utils/common/byte";
-import { getImageElementAsync } from "./image";
+import { getImageElementAsync } from "./element";
 
 // element > blob =====
 export const getBlobFromElementAsync = (
