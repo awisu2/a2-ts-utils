@@ -1,6 +1,7 @@
 import { Size } from "@a2-ts-utils/common/type";
 import { getSizeFromCanvasElement } from "../canvas/utils";
 import { getSizeFromVideoElement } from "../video/utils";
+import { getFitSize } from "@a2-ts-utils/common/image";
 
 export type ImageInfo = {
   src: string;
@@ -64,4 +65,20 @@ export const getImageElementAsync = (
 
     img.src = src;
   });
+};
+
+export const getSizeFromBlobAsync = async (blob: Blob): Promise<Size> => {
+  const bitmap = await createImageBitmap(blob);
+  return {
+    width: bitmap.width,
+    height: bitmap.height,
+  };
+};
+
+export const getFitSizeFromBlobAsync = async (
+  blob: Blob,
+  maxSize: Size,
+): Promise<Size> => {
+  const size = await getSizeFromBlobAsync(blob);
+  return getFitSize(size, maxSize);
 };

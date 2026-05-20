@@ -27,8 +27,8 @@ export const getCanvas2dFromElement = (
 
 export const intoElementToCanvas2d = getCanvas2dFromElement;
 
+// canvas > Blob =====
 // Blob: Binary Large Object
-// canvas > Blob > buffer > Uint8Array
 export const getBlobFromCanvasAsync = (
   canvas: HTMLCanvasElement,
   type: ImageMimeType = ImageMimeType.JPEG,
@@ -48,6 +48,7 @@ export const getBlobFromCanvasAsync = (
 
 export const intoCanvasToBlobAsync = getBlobFromCanvasAsync;
 
+// blob > bytes(Uint8Array) =====
 export const getBytesFromBlobAsync = async (
   blob: Blob,
 ): Promise<Uint8Array> => {
@@ -57,6 +58,7 @@ export const getBytesFromBlobAsync = async (
 
 export const intoBlobToBytesAsync = getBytesFromBlobAsync;
 
+// canvas > bytes(Uint8Array) =====
 export const getBytesFromCanvasElementAsync = async (
   canvas: HTMLCanvasElement,
   type: ImageMimeType = ImageMimeType.JPEG,
