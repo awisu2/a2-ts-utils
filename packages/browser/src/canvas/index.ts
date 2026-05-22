@@ -1,2 +1,4 @@
-export * from "./convert";
+export * from "./resize";
 export * from "./utils";
+export * from "./element";
+export * from "./getBlob";
