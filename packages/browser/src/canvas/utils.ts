@@ -1,6 +1,6 @@
 // get size from CanvasImageSource
 
-import { getBlobByBytes } from "./getBlob";
+import { getBlobAsync } from "./getBlob";
 
 // CanvasImageSource: HTMLImageElement, HTMLCanvasElement, HTMLVideoElement, ImageBitmap, OffscreenCanvas, SVGImageElement, VideoFrame etc.
 export const getSizeBySource = (
@@ -15,21 +15,28 @@ export const getSizeBySource = (
   if (src instanceof VideoFrame) {
     return { width: src.displayWidth, height: src.displayHeight };
   }
+  if (src instanceof HTMLImageElement) {
+    return { width: src.naturalWidth, height: src.naturalHeight };
+  }
   return { width: src.width, height: src.height };
 };
 
 export const getSourceAsync = async (
   data: Blob | Uint8Array,
-): Promise<CanvasImageSource | undefined> => {
+): Promise<CanvasImageSource> => {
   if (data instanceof Blob) {
-    return await createImageBitmap(data);
+    return await getSourceByBlobAsync(data);
   }
+  return await getSourceByBytesAsync(data);
+};
 
-  if (data instanceof Uint8Array) {
-    const blob = getBlobByBytes(data);
-    if (!blob) {
-      return undefined;
-    }
-    return await getSourceAsync(blob);
-  }
+const getSourceByBlobAsync = async (data: Blob): Promise<CanvasImageSource> => {
+  return await createImageBitmap(data);
+};
+
+const getSourceByBytesAsync = async (
+  data: Uint8Array,
+): Promise<CanvasImageSource> => {
+  const blob = await getBlobAsync(data);
+  return await getSourceByBlobAsync(blob);
 };

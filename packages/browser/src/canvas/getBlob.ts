@@ -1,13 +1,17 @@
 import { getCanvas2dBySource } from "./element";
 
 export const getBlobAsync = async (
-  src: HTMLCanvasElement | HTMLVideoElement,
+  src: HTMLCanvasElement | HTMLVideoElement | Uint8Array,
   type: string = "image/png",
 ): Promise<Blob> => {
   if (src instanceof HTMLCanvasElement) {
     return await getBlobByCanvasAsync(src, type);
-  } else {
+  } else if (src instanceof HTMLVideoElement) {
     return await getBlobByVideoElement(src, type);
+  } else if (src instanceof Uint8Array) {
+    return getBlobByBytes(src);
+  } else {
+    throw new Error("Failed getBlobAsync. Invalid input type.");
   }
 };
 
@@ -21,7 +25,10 @@ const getBlobByCanvasAsync = (
       if (blob) {
         resolve(blob);
       } else {
-        reject(new Error("Failed toBlob. check crossOrigin='anonymous'"));
+        const error = new Error(
+          "Failed canvas.toBlob(). may crossOrigin='anonymous'",
+        );
+        reject(error);
       }
     }, type);
   });
@@ -35,12 +42,12 @@ const getBlobByVideoElement = async (
   return await getBlobByCanvasAsync(canvas, type);
 };
 
-export const getBlobByBytes = (bytes: Uint8Array): Blob | undefined => {
+const getBlobByBytes = (bytes: Uint8Array): Blob => {
   if (!(bytes instanceof Uint8Array)) {
-    return undefined;
+    throw new Error("Failed getBlobByBytes. Invalid input: not a Uint8Array");
   }
   if (!(bytes.buffer instanceof ArrayBuffer)) {
-    return undefined;
+    throw new Error("Failed getBlobByBytes. Invalid input: not an ArrayBuffer");
   }
   return new Blob([bytes as Uint8Array<ArrayBuffer>]);
 };

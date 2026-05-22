@@ -2,16 +2,20 @@
 
 import { getFitSize } from "@a2-ts-utils/common/image";
 import { clearCanvas, getCanvas2dBySource } from "./element";
-import { getSizeBySource } from "./utils";
+import { getSizeBySource, getSourceAsync } from "./utils";
 import { getBlobAsync } from "./getBlob";
 
 // CanvasImageSource: HTMLImageElement, HTMLCanvasElement, HTMLVideoElement, ImageBitmap, OffscreenCanvas, SVGImageElement, VideoFrame etc.
-export const resizeBySourceAsync = async (
-  src: CanvasImageSource,
+export const resizeAsync = async (
+  source: CanvasImageSource | Blob | Uint8Array,
   type: string = "image/png",
   newSize?: { width: number; height: number },
 ) => {
-  const canvas = getCanvas2dBySource(src, newSize);
+  if (source instanceof Blob || source instanceof Uint8Array) {
+    source = await getSourceAsync(source);
+  }
+
+  const canvas = getCanvas2dBySource(source, newSize);
   try {
     return await getBlobAsync(canvas, type);
   } finally {
@@ -20,11 +24,14 @@ export const resizeBySourceAsync = async (
 };
 
 export const resizeFitBySourceAsync = async (
-  source: CanvasImageSource,
+  source: CanvasImageSource | Blob | Uint8Array,
   type: string = "image/png",
   maxSize: { width: number; height: number },
 ) => {
+  if (source instanceof Blob || source instanceof Uint8Array) {
+    source = await getSourceAsync(source);
+  }
   const size = getSizeBySource(source);
   const fitSize = getFitSize(size, maxSize);
-  return await resizeBySourceAsync(source, type, fitSize);
+  return await resizeAsync(source, type, fitSize);
 };
