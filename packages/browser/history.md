@@ -3,6 +3,7 @@
 ## 26-05
 
 - 05-24(sun)
+  - add getValueByEvent
   - add mouseEvent, keyEvent
 - 05-20(wed)
   - add `resizeBlob`, `resizeBytes`

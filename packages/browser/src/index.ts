@@ -4,5 +4,6 @@ export * as video from "./video";
 export * as canvas from "./canvas";
 export * as image from "./image";
 export * as mouse from "./mouse";
+export * as event from "./event";
 
 export const Name = "@a2-ts-utils/browser";
