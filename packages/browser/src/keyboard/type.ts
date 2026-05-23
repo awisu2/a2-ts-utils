@@ -1,8 +1,8 @@
-export const KeyEvent = {
+export const KeyEventType = {
   KeyDown: "keydown",
   KeyUp: "keyup",
 } as const;
-export type KeyEvent = (typeof KeyEvent)[keyof typeof KeyEvent];
+export type KeyEventType = (typeof KeyEventType)[keyof typeof KeyEventType];
 
 export const KeyCode = {
   ArrowUp: "ArrowUp",

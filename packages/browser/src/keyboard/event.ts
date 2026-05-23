@@ -1,7 +1,7 @@
-import { KeyEvent } from "./type";
+import { KeyEventType } from "./type";
 
 export const listenKeyboardEvent = (
-  type: KeyEvent,
+  type: KeyEventType,
   handler: (e: KeyboardEvent) => void,
   target: Window | HTMLElement | Document = document,
 ): (() => void) => {

@@ -2,6 +2,8 @@
 
 ## 26-05
 
+- 05-24(sun)
+  - add mouseEvent, keyEvent
 - 05-20(wed)
   - add `resizeBlob`, `resizeBytes`
 - 05-06(wed)
