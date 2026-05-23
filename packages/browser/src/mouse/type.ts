@@ -24,3 +24,10 @@ export const MouseEventType = {
 } as const;
 export type MouseEventType =
   (typeof MouseEventType)[keyof typeof MouseEventType];
+
+export const WheelDirection = {
+  Up: "up",
+  Down: "down",
+} as const;
+export type WheelDirection =
+  (typeof WheelDirection)[keyof typeof WheelDirection];

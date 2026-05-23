@@ -1,4 +1,4 @@
-import { MouseEventType } from "./type";
+import { MouseEventType, WheelDirection } from "./type";
 
 export const listenMouseEvent = (
   mouseEventType: MouseEventType,
@@ -31,4 +31,8 @@ export const listenMouseWheel = (
   };
 
   return unsubscribe;
+};
+
+export const getWheelDirectionByEvent = (event: WheelEvent): WheelDirection => {
+  return event.deltaY < 0 ? WheelDirection.Up : WheelDirection.Down;
 };

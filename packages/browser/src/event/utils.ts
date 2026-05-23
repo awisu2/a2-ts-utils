@@ -10,3 +10,21 @@ export const getValueByEvent = (event: Event): string => {
     `[getValueByEvent] target does not have a value property. tagName: ${tagName}`,
   );
 };
+
+export const getNumByEvent = (event: Event): number => {
+  const value = getValueByEvent(event);
+
+  // avoid empty 0 =====
+  if (value.trim() === "") {
+    throw new Error("[getNumByEvent] Value is empty.");
+  }
+
+  // check cast result =====
+  const num = Number(value);
+  if (Number.isNaN(num)) {
+    throw new Error(
+      `[getNumByEvent] Converted value is NaN. Raw value: ${value}`,
+    );
+  }
+  return num;
+};
