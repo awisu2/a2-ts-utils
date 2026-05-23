@@ -70,7 +70,7 @@ export class ConcurrentRunner {
     return nextPriority;
   }
 
-  clearTasks(): void {
+  clear(): void {
     this._priorityQueues.clear();
     this._priorities = [];
     this._state.pending = 0;
@@ -91,7 +91,7 @@ export class ConcurrentRunner {
     return queue;
   }
 
-  private DeleteQueue(priority: number) {
+  private deleteQueue(priority: number) {
     this._priorityQueues.delete(priority);
     this.deletePriority(priority);
   }
@@ -129,7 +129,7 @@ export class ConcurrentRunner {
         var isHighestOrLower = i == 0 || priority == 0;
         if (!isHighestOrLower) {
           this.debugLog(`queue deleted for priority`);
-          this.DeleteQueue(priority);
+          this.deleteQueue(priority);
           i--;
         }
       }
