@@ -70,6 +70,15 @@ export class ConcurrentRunner {
     return nextPriority;
   }
 
+  clearTasks(): void {
+    this._priorityQueues.clear();
+    this._priorities = [];
+    this._state.pending = 0;
+
+    // Note: no reset runnning tasks. this function not stop running task.
+    // this._state.running = 0;
+  }
+
   private getOrCreateQueue(priority: number): Queue<() => Promise<void>> {
     let queue = this._priorityQueues.get(priority);
     if (!queue) {
