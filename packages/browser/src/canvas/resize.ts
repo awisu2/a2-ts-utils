@@ -11,10 +11,12 @@ export const resizeAsync = async (
   type: string = "image/png",
   newSize?: { width: number; height: number },
 ) => {
+  // get source =====
   if (source instanceof Blob || source instanceof Uint8Array) {
     source = await getSourceAsync(source);
   }
 
+  // resize via canvas =====
   const canvas = getCanvas2dBySource(source, newSize);
   try {
     return await getBlobAsync(canvas, type);
@@ -23,15 +25,21 @@ export const resizeAsync = async (
   }
 };
 
-export const resizeFitBySourceAsync = async (
+// resize with fitting size
+export const resizeFitAsync = async (
   source: CanvasImageSource | Blob | Uint8Array,
   type: string = "image/png",
   maxSize: { width: number; height: number },
 ) => {
+  // get source =====
   if (source instanceof Blob || source instanceof Uint8Array) {
     source = await getSourceAsync(source);
   }
+
+  // get fit size =====
   const size = getSizeBySource(source);
   const fitSize = getFitSize(size, maxSize);
+
+  // resize =====
   return await resizeAsync(source, type, fitSize);
 };
