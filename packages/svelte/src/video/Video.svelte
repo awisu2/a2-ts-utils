@@ -9,6 +9,13 @@
 
   let { src, attrs, events, api = $bindable<VideoApi>() }: Props = $props();
 
+  let _src = $derived.by(() => {
+    if (attrs?.currenttime) {
+      return `${src}#t=${attrs.currenttime}`;
+    }
+    return src;
+  });
+
   onMount(() => {});
 
   const eventHandle = (
@@ -47,7 +54,7 @@
 </script>
 
 <video
-  {src}
+  src={_src}
   {...attrs}
   onerror={eventHandle(events?.onerror)}
   onended={eventHandle(events?.onended)}
