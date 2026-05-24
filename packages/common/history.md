@@ -3,7 +3,7 @@
 ## 26-05
 
 - 05-18(mon)
-  - add `normalizePath()`
+  - add `normalizePath()` `getSetInterval`
 - 05-16(sat)
   - add KeyMapUtil.ts
 - 05-06(wed)
