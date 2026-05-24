@@ -1,6 +1,6 @@
 {
   "name": "@a2-ts-utils/tauri",
-  "version": "26.5.1",
+  "version": "26.5.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,8 @@
   ],
   "devDependencies": {
     "@tauri-apps/api": "^2.10.1",
-    "tauri": "^0.15.0"
-  }
+    "tauri": "^0.15.0",
+    "@tauri-apps/plugin-dialog": "^2.7.1"
+  },
+  "dependencies": {}
 }
