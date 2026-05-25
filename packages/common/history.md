@@ -3,7 +3,7 @@
 ## 26-05
 
 - 05-26(tue)
-  - add `getArrayRange`
+  - add `sliceLoop`
 - 05-18(mon)
   - add `normalizePath()` `getSetInterval`
 - 05-16(sat)

@@ -1,6 +1,6 @@
 // 配列から指定された範囲の用を取得
 // startが負数であっても問題なく取得する
-export function getArrayRange<T>(
+export function sliceLoop<T>(
   array: readonly T[],
   start: number,
   num: number,
