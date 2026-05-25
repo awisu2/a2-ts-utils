@@ -1,39 +1,32 @@
-export abstract class ArrayUtil<T> {
-  abstract getKey(data: T): string;
+// 配列から指定された範囲の用を取得
+// startが負数であっても問題なく取得する
+export function getArrayRange<T>(
+  array: readonly T[],
+  start: number,
+  num: number,
+  isInRange: boolean = true,
+): T[] {
+  // validation =====
+  const length = array.length;
+  if (length === 0 || num <= 0) return [];
 
-  sets(
-    map: Map<string, T>,
-    updates: T[] | Map<string, T> | Set<T>,
-    option?: {
-      isUpdateOnly?: boolean;
-      isNew?: boolean;
-    },
-  ): Map<string, T> {
-    const isOnlyUpdate = option?.isUpdateOnly ?? false;
-    const isNew = option?.isNew ?? false;
+  // fix start and num =====
+  const _start =
+    start >= 0
+      ? start % length
+      : (length - (Math.abs(start) % length)) % length;
 
-    updates.forEach((data) => {
-      const key = this.getKey(data);
-      if (isOnlyUpdate && !map.has(key)) {
-        return;
-      }
-      map.set(key, data);
-    });
-
-    if (isNew) {
-      map = new Map(map);
-    }
-
-    return map;
+  let _num = num;
+  if (isInRange && num > length) {
+    _num = length;
   }
 
-  hasMuch(map: Map<string, T>, value: T): boolean {
-    const key = this.getKey(value);
-    return map.has(key);
+  // main =====
+  const result: T[] = [];
+  for (let i = 0; i < _num; i++) {
+    const index = (_start + i) % length;
+    result.push(array[index]);
   }
 
-  getMuch(map: Map<string, T>, value: T): T | undefined {
-    const key = this.getKey(value);
-    return map.get(key);
-  }
+  return result;
 }

@@ -2,6 +2,8 @@
 
 ## 26-05
 
+- 05-26(tue)
+  - add `getArrayRange`
 - 05-18(mon)
   - add `normalizePath()` `getSetInterval`
 - 05-16(sat)
