@@ -4,7 +4,7 @@ export function sliceLoop<T>(
   array: readonly T[],
   start: number,
   num: number,
-  isInRange: boolean = true,
+  isInRange: boolean = false,
 ): T[] {
   // validation =====
   const length = array.length;
