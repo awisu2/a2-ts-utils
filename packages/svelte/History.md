@@ -2,6 +2,8 @@
 
 ## 26-05
 
+- 05-26(tue)
+  - add vervose to Video.svelte
 - 05-24
   - add LazyActive
 

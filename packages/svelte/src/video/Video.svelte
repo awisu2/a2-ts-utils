@@ -7,7 +7,14 @@
     type VideoApi,
   } from "./video";
 
-  let { src, attrs, events, api = $bindable<VideoApi>() }: Props = $props();
+  // e.g.: `bind:api={movieApiRef}`
+  let {
+    src,
+    attrs,
+    events,
+    api = $bindable<VideoApi>(),
+    vervose = false,
+  }: Props = $props();
 
   let _src = $derived.by(() => {
     if (attrs?.currenttime) {
@@ -18,39 +25,80 @@
 
   onMount(() => {});
 
+  const log = (...args: any[]) => {
+    if (vervose) {
+      console.log("[Video.svelte]", ...args);
+    }
+  };
+
+  let ref: HTMLVideoElement | null = null;
+
+  const withRef = (fn: (ref: HTMLVideoElement) => void) => {
+    if (ref) {
+      fn(ref);
+    } else {
+      log("ref is not set yet");
+    }
+  };
+
+  $effect(() => {
+    api = {
+      play: () => {
+        log("play");
+        withRef((ref) => ref.play());
+      },
+      pause: () => {
+        log("pause");
+        withRef((ref) => ref.pause());
+      },
+      togglePlay: () => {
+        log("togglePlay", ref?.paused);
+        withRef((ref) => {
+          ref.paused ? ref.play() : ref.pause();
+        });
+      },
+      setTime: (time: number) => {
+        log("setTime", time);
+        withRef((ref) => (ref.currentTime = time));
+      },
+      addTime: (time: number) => {
+        log("addTime", time);
+        withRef((ref) => (ref.currentTime += time));
+      },
+      mute: () => {
+        log("mute");
+        withRef((ref) => (ref.muted = true));
+      },
+      unmute: () => {
+        log("unmute");
+        withRef((ref) => (ref.muted = false));
+      },
+      toggleMute: () => {
+        log("toggleMute", ref?.muted);
+        withRef((ref) => (ref.muted = !ref.muted));
+      },
+      setVolume: (volume: number) => {
+        log("setVolume", volume);
+        withRef((ref) => (ref.volume = volume));
+      },
+      setPlaybackRate: (rate: number) => {
+        log("setPlaybackRate", rate);
+        withRef((ref) => (ref.playbackRate = rate));
+      },
+    };
+  });
+
+  // eventの簡易ハンドラー, 引数の有無に合わせてvideoタグへセットを行う
   const eventHandle = (
     fn?: (e: VideoCustomEvent) => void,
   ): ((e: VideoBasicEvent) => void) | undefined => {
     if (!fn) return undefined;
 
     return (e: VideoBasicEvent) => {
-      if (fn) fn({ ...e, currentTarget: e.currentTarget as HTMLVideoElement });
+      log("event", e.type, e);
+      fn({ ...e, currentTarget: e.currentTarget as HTMLVideoElement });
     };
   };
-
-  let ref: HTMLVideoElement | null = null;
-
-  $effect(() => {
-    api = {
-      play: () => ref!.play(),
-      pause: () => ref!.pause(),
-      togglePlay: () => {
-        if (!ref) return;
-        ref.paused ? ref.play() : ref.pause();
-      },
-      setTime: (time: number) => {
-        if (!ref) return;
-        ref.currentTime = time;
-      },
-      addTime: (time: number) => (ref ? (ref.currentTime += time) : undefined),
-      mute: () => (ref ? (ref.muted = true) : undefined),
-      unmute: () => (ref ? (ref.muted = false) : undefined),
-      toggleMute: () => (ref ? (ref.muted = !ref.muted) : undefined),
-      setVolume: (volume: number) => (ref ? (ref.volume = volume) : undefined),
-      setPlaybackRate: (rate: number) =>
-        ref ? (ref.playbackRate = rate) : undefined,
-    };
-  });
 </script>
 
 <video

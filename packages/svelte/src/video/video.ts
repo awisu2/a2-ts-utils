@@ -34,4 +34,5 @@ export type Props = {
   events?: VideoEvents;
   ref?: HTMLVideoElement;
   api?: VideoApi;
+  vervose?: boolean;
 };
