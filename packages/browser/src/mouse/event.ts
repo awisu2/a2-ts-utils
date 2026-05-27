@@ -4,11 +4,12 @@ export const listenMouseEvent = (
   mouseEventType: MouseEventType,
   handler: (event: MouseEvent) => void,
   target: Window | HTMLElement | Document = document,
+  isPassive: boolean = true,
 ): (() => void) => {
   const _handler = (event: Event) => {
     handler(event as MouseEvent);
   };
-  target.addEventListener(mouseEventType, _handler);
+  target.addEventListener(mouseEventType, _handler, { passive: isPassive });
 
   const unsubscribe = () => {
     target.removeEventListener(mouseEventType, _handler);
@@ -24,7 +25,7 @@ export const listenMouseWheel = (
   const _handler = (event: Event) => {
     handler(event as WheelEvent);
   };
-  target.addEventListener("wheel", _handler);
+  target.addEventListener("wheel", _handler, { passive: true });
 
   const unsubscribe = () => {
     target.removeEventListener("wheel", _handler);

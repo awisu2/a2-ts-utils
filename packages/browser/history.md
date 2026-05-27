@@ -2,6 +2,8 @@
 
 ## 26-05
 
+- 05-27(wed)
+  - listenMousuWheel で警告が出るため passive をセットできるように対応
 - 05-24(sun)
   - add getValueByEvent, getNumbByEvent, getWheelDerection
   - add mouseEvent, keyEvent
