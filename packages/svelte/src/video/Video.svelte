@@ -16,22 +16,23 @@
     vervose = false,
   }: Props = $props();
 
-  let _src = $derived.by(() => {
-    // htmltag としては すべて小文字 の currenttime
-    const currentTime = attrs?.currenttime;
-    if (currentTime && currentTime > 0) {
-      return `${src}#t=${currentTime}`;
-    }
-    return src;
-  });
-
-  onMount(() => {});
-
   const log = (...args: any[]) => {
     if (vervose) {
       console.log("[Video.svelte]", ...args);
     }
   };
+
+  let _src = $derived.by(() => {
+    // htmltag としては すべて小文字 の currenttime
+    const currenttime = attrs?.currenttime ?? 0;
+    if (currenttime > 0) {
+      return `${src}#t=${currenttime}`;
+    }
+    log("derived src", { src, currenttime });
+    return src;
+  });
+
+  onMount(() => {});
 
   let ref: HTMLVideoElement | null = null;
 
