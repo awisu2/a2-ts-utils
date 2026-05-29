@@ -5,7 +5,12 @@ export type VideoCustomEvent = Event & { currentTarget: HTMLVideoElement };
 
 export type VideoAttrs = Omit<
   HTMLVideoAttributes,
-  "src" | "onerror" | "onended" | "onloadedmetadata" | "onseeked"
+  | "src"
+  | "onerror"
+  | "onended"
+  | "onloadedmetadata"
+  | "onseeked"
+  | "ontimeupdate"
 >;
 
 export type VideoEvents = {
@@ -13,14 +18,16 @@ export type VideoEvents = {
   onended?: (e: VideoCustomEvent) => void;
   onloadedmetadata?: (e: VideoCustomEvent) => void;
   onseeked?: (e: VideoCustomEvent) => void;
+  ontimeupdate?: (e: VideoCustomEvent) => void;
 };
 
 export type VideoApi = {
   play: () => void;
   pause: () => void;
   togglePlay: () => void;
-  setTime: (time: number) => void;
-  addTime: (time: number) => void;
+  setCurrentTime: (time: number) => void;
+  addCurrentTime: (time: number) => void;
+  getCurrentTime: () => number;
   mute: () => void;
   unmute: () => void;
   toggleMute: () => void;
