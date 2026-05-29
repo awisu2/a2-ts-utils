@@ -8,16 +8,18 @@
   } from "./video";
 
   // e.g.: `bind:api={movieApiRef}`
+  // bind:this による直接参照はまだ動作するが、svelte5からRuneモードというものが導入され exportが非推奨になっている
+  // そのため,別途 $bindable で interface を提供するのが良いらしい
   let {
     src,
     attrs,
     events,
     api = $bindable<VideoApi>(),
-    vervose = false,
+    verbose = false,
   }: Props = $props();
 
   const log = (...args: any[]) => {
-    if (vervose) {
+    if (verbose) {
       console.log("[Video.svelte]", ...args);
     }
   };
@@ -45,6 +47,7 @@
   };
 
   api = {
+    getRef: () => ref,
     play: () => {
       log("play");
       withRef((ref) => ref.play());

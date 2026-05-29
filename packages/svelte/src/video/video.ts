@@ -22,6 +22,7 @@ export type VideoEvents = {
 };
 
 export type VideoApi = {
+  getRef: () => HTMLVideoElement | null;
   play: () => void;
   pause: () => void;
   togglePlay: () => void;
@@ -41,5 +42,5 @@ export type Props = {
   events?: VideoEvents;
   ref?: HTMLVideoElement;
   api?: VideoApi;
-  vervose?: boolean;
+  verbose?: boolean;
 };
