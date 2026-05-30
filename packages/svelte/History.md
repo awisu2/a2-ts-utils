@@ -3,6 +3,7 @@
 ## 26-05
 
 - 05-30(sat)
+  - Video.svelte の 汎用化
   - packageを 先頭の index のみに統一 (利用時に不明な分散が多いため)
 - 05-26(tue)
   - add vervose to Video.svelte

@@ -1,26 +1,5 @@
 import { HTMLVideoAttributes } from "svelte/elements";
 
-export type VideoBasicEvent = Event & { currentTarget: Element };
-export type VideoCustomEvent = Event & { currentTarget: HTMLVideoElement };
-
-export type VideoAttrs = Omit<
-  HTMLVideoAttributes,
-  | "src"
-  | "onerror"
-  | "onended"
-  | "onloadedmetadata"
-  | "onseeked"
-  | "ontimeupdate"
->;
-
-export type VideoEvents = {
-  onerror?: (e: VideoCustomEvent) => void;
-  onended?: (e: VideoCustomEvent) => void;
-  onloadedmetadata?: (e: VideoCustomEvent) => void;
-  onseeked?: (e: VideoCustomEvent) => void;
-  ontimeupdate?: (e: VideoCustomEvent) => void;
-};
-
 export type VideoApi = {
   getRef: () => HTMLVideoElement | null;
   play: () => void;
@@ -36,11 +15,38 @@ export type VideoApi = {
   setPlaybackRate: (rate: number) => void;
 };
 
+export const VideoEventType = {
+  Error: "error",
+  Ended: "ended",
+  LoadedMetadata: "loadedmetadata",
+  // シーク完了
+  Seeked: "seeked",
+  // 再生位置が変化
+  TimeUpdate: "timeupdate",
+  // 音量が変化
+  VolumeChange: "volumechange",
+  // 再生速度が変化
+  RateChange: "ratechange",
+  // play() による再生要求
+  Play: "play",
+  // 停止
+  Pause: "pause",
+  // 再生開始
+  Playing: "playing",
+  // 再生が一時停止またはバッファリングで待機中(再生中ランダムに発生する可能性あり)
+  Waiting: "waiting",
+} as const;
+export type VideoEventType =
+  (typeof VideoEventType)[keyof typeof VideoEventType];
+
+export type VideoEvent = (
+  type: VideoEventType,
+  event: Event,
+  element: HTMLVideoElement,
+) => void;
+
 export type Props = {
-  src: string;
-  attrs?: VideoAttrs;
-  events?: VideoEvents;
-  ref?: HTMLVideoElement;
+  attrs: HTMLVideoAttributes;
   api?: VideoApi;
-  verbose?: boolean;
+  onEvent?: VideoEvent;
 };
