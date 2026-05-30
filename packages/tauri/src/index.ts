@@ -1,1 +1,1 @@
-import * as dialog from "./dialog";
+export * from "./dialog";

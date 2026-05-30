@@ -1,8 +1,11 @@
-export * as task from "./task";
-export * as image from "./image";
-export * as type from "./type";
-export * as byte from "./byte";
-export * as data from "./data";
-export * as time from "./time";
+export * from "./byte";
+export * from "./data";
+export * from "./image";
+export * from "./log";
+export * from "./path";
+export * from "./sys";
+export * from "./task";
+export * from "./time";
+export * from "./type";
 
 export const Name = "@a2-ts-utils/common";

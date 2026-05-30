@@ -1,10 +1,6 @@
 # History
 
-## 26-05
+# 26-05
 
 - 05-30(sat)
   - packageを 先頭の index のみに統一 (利用時に不明な分散が多いため)
-- 05-24 (sun)
-  - add openDialog
-- 05-02 (sat)
-  - ConvertFileSrcCache を追加

@@ -1,9 +1,10 @@
-export * as runner from "./runner";
-export * as clipboard from "./clipboard";
-export * as video from "./video";
-export * as canvas from "./canvas";
-export * as image from "./image";
-export * as mouse from "./mouse";
-export * as event from "./event";
+export * from "./canvas";
+export * from "./clipboard";
+export * from "./event";
+export * from "./image";
+export * from "./keyboard";
+export * from "./mouse";
+export * from "./runner";
+export * from "./video";
 
 export const Name = "@a2-ts-utils/browser";

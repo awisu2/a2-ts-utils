@@ -1,6 +1,6 @@
 // resize by CanvasImageSource
 
-import { getFitSize } from "@a2-ts-utils/common/image";
+import { getFitSize } from "@a2-ts-utils/common";
 import { clearCanvas, getCanvas2dBySource } from "./element";
 import { getSizeBySource, getSourceAsync } from "./utils";
 import { getBlobAsync } from "./getBlob";

@@ -1,4 +1,4 @@
-import { Size } from "@a2-ts-utils/common/type";
+import { Size } from "@a2-ts-utils/common";
 
 export type VideoInfo = Size & {
   currentTime: number;

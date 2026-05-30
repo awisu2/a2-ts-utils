@@ -1,6 +1,6 @@
 {
   "name": "@a2-ts-utils/common",
-  "version": "26.5.54",
+  "version": "26.5.56",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,11 +15,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "import": "./dist/*.js",
-      "require": "./dist/*.cjs"
     }
   },
   "files": [

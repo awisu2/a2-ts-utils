@@ -1,6 +1,6 @@
 {
   "name": "@a2-ts-utils/tauri",
-  "version": "26.5.2",
+  "version": "26.5.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,11 +16,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "import": "./dist/*.js",
-      "require": "./dist/*.cjs"
     }
   },
   "files": [

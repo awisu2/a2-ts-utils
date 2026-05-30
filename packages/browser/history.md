@@ -2,6 +2,8 @@
 
 ## 26-05
 
+- 05-30(sat)
+  - packageを 先頭の index のみに統一 (利用時に不明な分散が多いため)
 - 05-27(wed)
   - listenMousuWheel で警告が出るため passive をセットできるように対応
 - 05-24(sun)

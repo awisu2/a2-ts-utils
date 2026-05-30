@@ -2,29 +2,6 @@ import { defineConfig } from "vite";
 // generate .d.ts files
 import dts from "vite-plugin-dts";
 import { resolve } from "path";
-import { existsSync, readdirSync, statSync } from "fs";
-
-// generate entries (e.g. {test: ./src/test/index.ts}) for library mode
-const getEntries = () => {
-  const srcPath = resolve(__dirname, "src");
-  const entries: Record<string, string> = {};
-
-  const indexFile = resolve(srcPath, "index.ts");
-  if (existsSync(indexFile)) {
-    entries["index"] = indexFile;
-  }
-
-  readdirSync(srcPath).forEach((dir) => {
-    const fullPath = resolve(srcPath, dir);
-    const entryFile = resolve(fullPath, "index.ts");
-
-    if (statSync(fullPath).isDirectory() && existsSync(entryFile)) {
-      entries[dir] = entryFile;
-    }
-  });
-
-  return entries;
-};
 
 export default defineConfig({
   build: {
@@ -32,7 +9,7 @@ export default defineConfig({
     target: "es2022",
     lib: {
       // get correct path
-      entry: getEntries(),
+      entry: [resolve(__dirname, "src", "index.ts")],
 
       // regist to globalThis with this name
       name: "A2TsUtilsNode",

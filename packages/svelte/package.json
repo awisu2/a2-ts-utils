@@ -1,6 +1,6 @@
 {
   "name": "@a2-ts-utils/svelte",
-  "version": "26.5.16",
+  "version": "26.5.18",
   "description": "",
   "type": "module",
   "scripts": {
@@ -16,11 +16,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "import": "./dist/*.js",
-      "require": "./dist/*.cjs"
     }
   },
   "files": [
