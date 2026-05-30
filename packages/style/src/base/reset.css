@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+/**
+ * reset.css
+ * ブラウザのデフォルトスタイルをリセットするためのCSS
+ */
+@layer base {
+}

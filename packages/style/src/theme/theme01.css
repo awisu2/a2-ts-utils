@@ -1,0 +1,32 @@
+@reference "tailwindcss";
+
+/**
+ * theme01.css
+ * アプリケーション全体のテーマスタイルを定義するためのCSS
+ */
+
+@import "../base/reset.css";
+
+@layer base {
+  html,
+  body {
+    @apply size-full;
+  }
+
+  html {
+    /* todo: 汎用的ではない */
+    @apply text-[15px];
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  h7,
+  h8,
+  h9 {
+    @apply font-bold;
+  }
+}

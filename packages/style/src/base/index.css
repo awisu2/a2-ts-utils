@@ -2,4 +2,5 @@
 
 /* @import './shadcn.css'; */
 
-@import "./icon/index.css";
+@import "./base.css";
+@import "./reset.css";
