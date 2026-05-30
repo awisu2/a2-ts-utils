@@ -1,5 +1,2 @@
-@import "tailwindcss";
-
-/* @import './shadcn.css'; */
-
 @import "./icon/index.css";
+@import "./menu.css/index.css";
