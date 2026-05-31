@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@utility fix-height {
+.fix-height {
   display: flex;
   & > * {
     flex: 1;

@@ -1,0 +1,12 @@
+/* 親タグ内に */
+.scroll {
+  @apply overflow-y-auto overflow-x-hidden break-all;
+
+  &.fit-scroll-x {
+    @apply overflow-y-hidden overflow-x-auto;
+  }
+
+  &.fit-scroll-xy {
+    @apply overflow-y-auto overflow-x-auto;
+  }
+}
