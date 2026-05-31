@@ -2,6 +2,8 @@
 
 ## 26-05
 
+- 05-31(sun)
+  - EventStopper.svelteの追加
 - 05-30(sat)
   - Video.svelte の 汎用化
   - packageを 先頭の index のみに統一 (利用時に不明な分散が多いため)
