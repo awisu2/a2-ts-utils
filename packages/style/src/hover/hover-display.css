@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+.hover-display {
+  & > .hover-display-item {
+    @apply hidden;
+  }
+
+  &:hover > .hover-display-item {
+    @apply block;
+
+    &.hover-display-item-grid {
+      @apply grid;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@utility fix-height {
+  display: flex;
+  & > * {
+    flex: 1;
+  }
+}

@@ -6,135 +6,133 @@
   prefixes: lucide, heroicons;
 }
 
-@layer utilities {
-  /* Icons: https://heroicons.com/ */
-  .icon-base,
-  .icon-reload,
-  .icon-sort,
-  .icon-mejor,
-  .icon-deep-load,
-  .icon-star,
-  .icon-star-solid,
-  .icon-heart,
-  .icon-heart-solid,
-  .icon-search,
-  .icon-menu,
-  .icon-menu-dots,
-  .icon-up,
-  .icon-down,
-  .icon-left,
-  .icon-right,
-  .icon-file,
-  .icon-copy,
-  .icon-folder,
-  .icon-photo,
-  .icon-movie,
-  .icon-archive,
-  .icon-also-parent,
-  .icon-trash,
-  .icon-logs,
-  .icon-config,
-  .icon-home,
-  .icon-display-file-type {
-    @apply align-middle;
-    @apply !size-5;
-  }
+/* Icons: https://heroicons.com/ */
+.icon-base,
+.icon-reload,
+.icon-sort,
+.icon-mejor,
+.icon-deep-load,
+.icon-star,
+.icon-star-solid,
+.icon-heart,
+.icon-heart-solid,
+.icon-search,
+.icon-menu,
+.icon-menu-dots,
+.icon-up,
+.icon-down,
+.icon-left,
+.icon-right,
+.icon-file,
+.icon-copy,
+.icon-folder,
+.icon-photo,
+.icon-movie,
+.icon-archive,
+.icon-also-parent,
+.icon-trash,
+.icon-logs,
+.icon-config,
+.icon-home,
+.icon-display-file-type {
+  @apply align-middle;
+  @apply !size-5;
+}
 
-  .icon-sm {
-    @apply !size-4;
-  }
+.icon-sm {
+  @apply !size-4;
+}
 
-  .icon-reload {
-    @apply icon-[heroicons--arrow-path];
-  }
+.icon-reload {
+  @apply icon-[heroicons--arrow-path];
+}
 
-  .icon-sort {
-    @apply icon-[heroicons--arrows-up-down];
-  }
+.icon-sort {
+  @apply icon-[heroicons--arrows-up-down];
+}
 
-  .icon-mejor {
-    @apply icon-[heroicons--code-bracket-square];
-  }
+.icon-mejor {
+  @apply icon-[heroicons--code-bracket-square];
+}
 
-  .icon-deep-load {
-    @apply icon-[heroicons--document-chart-bar];
-  }
+.icon-deep-load {
+  @apply icon-[heroicons--document-chart-bar];
+}
 
-  .icon-star {
-    @apply icon-[heroicons--star];
-  }
+.icon-star {
+  @apply icon-[heroicons--star];
+}
 
-  .icon-star-solid {
-    @apply icon-[heroicons--star-solid];
-  }
+.icon-star-solid {
+  @apply icon-[heroicons--star-solid];
+}
 
-  .icon-heart {
-    @apply icon-[heroicons--heart];
-  }
-  .icon-heart-solid {
-    @apply icon-[heroicons--heart-solid];
-  }
+.icon-heart {
+  @apply icon-[heroicons--heart];
+}
+.icon-heart-solid {
+  @apply icon-[heroicons--heart-solid];
+}
 
-  .icon-search {
-    @apply icon-[heroicons--magnifying-glass];
-  }
+.icon-search {
+  @apply icon-[heroicons--magnifying-glass];
+}
 
-  .icon-menu {
-    @apply icon-[heroicons--bars-3];
-  }
-  .icon-menu-dots {
-    @apply icon-[heroicons--ellipsis-horizontal];
-  }
+.icon-menu {
+  @apply icon-[heroicons--bars-3];
+}
+.icon-menu-dots {
+  @apply icon-[heroicons--ellipsis-horizontal];
+}
 
-  .icon-up {
-    @apply icon-[heroicons--arrow-up];
-  }
-  .icon-down {
-    @apply icon-[heroicons--arrow-down];
-  }
-  .icon-left {
-    @apply icon-[heroicons--arrow-left];
-  }
-  .icon-right {
-    @apply icon-[heroicons--arrow-right];
-  }
-  .icon-file {
-    @apply icon-[heroicons--document];
-  }
-  .icon-copy {
-    @apply icon-[heroicons--document-duplicate];
-  }
-  .icon-folder {
-    @apply icon-[heroicons--folder];
-  }
-  .icon-photo {
-    @apply icon-[heroicons--photo];
-  }
+.icon-up {
+  @apply icon-[heroicons--arrow-up];
+}
+.icon-down {
+  @apply icon-[heroicons--arrow-down];
+}
+.icon-left {
+  @apply icon-[heroicons--arrow-left];
+}
+.icon-right {
+  @apply icon-[heroicons--arrow-right];
+}
+.icon-file {
+  @apply icon-[heroicons--document];
+}
+.icon-copy {
+  @apply icon-[heroicons--document-duplicate];
+}
+.icon-folder {
+  @apply icon-[heroicons--folder];
+}
+.icon-photo {
+  @apply icon-[heroicons--photo];
+}
 
-  .icon-movie {
-    @apply icon-[heroicons--video-camera];
-  }
-  .icon-archive {
-    @apply icon-[heroicons--archive-box];
-  }
+.icon-movie {
+  @apply icon-[heroicons--video-camera];
+}
+.icon-archive {
+  @apply icon-[heroicons--archive-box];
+}
 
-  /* 親にも同時にRankをセットするという意味合いでのアイコン */
-  .icon-also-parent {
-    @apply icon-[heroicons--receipt-refund];
-  }
-  .icon-trash {
-    @apply icon-[heroicons--trash];
-  }
-  .icon-logs {
-    @apply icon-[heroicons--newspaper];
-  }
-  .icon-config {
-    @apply icon-[heroicons--cog-6-tooth];
-  }
-  .icon-home {
-    @apply icon-[heroicons--home];
-  }
-  .icon-display-file-type {
-    @apply icon-[heroicons--eye];
-  }
+/* 親にも同時にRankをセットするという意味合いでのアイコン */
+.icon-also-parent {
+  @apply icon-[heroicons--receipt-refund];
+}
+.icon-trash {
+  @apply icon-[heroicons--trash];
+}
+.icon-logs {
+  @apply icon-[heroicons--newspaper];
+}
+.icon-config {
+  @apply icon-[heroicons--cog-6-tooth];
+}
+.icon-home {
+  @apply icon-[heroicons--home];
+}
+.icon-display-file-type {
+  @apply icon-[heroicons--eye];
 }

@@ -1,1 +1,1 @@
-export { default as EventStopper } from "./EventStopper.svelte";
+export { default as EventStopDiv } from "./EventStopDiv.svelte";
