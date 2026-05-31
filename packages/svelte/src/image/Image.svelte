@@ -1,36 +1,17 @@
 <script lang="ts">
-  import {
-    type ImageProps,
-    type ImageBasicEvent,
-    type ImageCustomEvent,
-    onLoaded,
-  } from "./image";
+  import { ImageEventType, type ImageProps } from "./image";
 
-  const { src, opts, events }: ImageProps = $props();
+  const { onEvent = undefined, ...attrs }: ImageProps = $props();
 
-  function convertEvent(ev: ImageBasicEvent): ImageCustomEvent {
-    return {
-      ...ev,
-      currentTarget: ev.currentTarget as HTMLImageElement,
-    };
-  }
-  const eventHandle = (
-    fn?: (e: ImageCustomEvent) => void,
-    isOnload = false,
-  ): ((e: ImageBasicEvent) => void) | undefined => {
-    if (!fn) return undefined;
-
-    return (ev: ImageBasicEvent) => {
-      var customEvent = convertEvent(ev);
-      if (fn) fn(customEvent);
-      if (isOnload) onLoaded(customEvent);
-    };
+  const _onEvent = (type: ImageEventType, event: Event) => {
+    const element = event.currentTarget as HTMLImageElement;
+    onEvent?.(type, event, element);
   };
 </script>
 
 <img
-  {src}
-  {...opts}
-  onload={eventHandle(events?.onload, true)}
-  onerror={eventHandle(events?.onerror)}
+  onload={(event) => _onEvent(ImageEventType.Load, event)}
+  onerror={(event) => _onEvent(ImageEventType.Error, event)}
+  onabort={(event) => _onEvent(ImageEventType.Abort, event)}
+  {...attrs}
 />

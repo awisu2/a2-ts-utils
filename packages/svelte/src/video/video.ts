@@ -46,7 +46,6 @@ export type VideoEvent = (
 ) => void;
 
 export type Props = {
-  attrs: HTMLVideoAttributes;
   api?: VideoApi;
   onEvent?: VideoEvent;
-};
+} & HTMLVideoAttributes;

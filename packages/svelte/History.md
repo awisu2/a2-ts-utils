@@ -3,6 +3,7 @@
 ## 26-05
 
 - 05-31(sun)
+  - Image, Video のプロパティ汎用化
   - EventStopper.svelteの追加
 - 05-30(sat)
   - Video.svelte の 汎用化

@@ -6,9 +6,9 @@
   // bind:this による直接参照はまだ動作するが、svelte5からRuneモードというものが導入され exportが非推奨になっている
   // そのため,別途 $bindable で interface を提供するのが良いらしい
   let {
-    attrs,
     api = $bindable<VideoApi>(),
     onEvent = undefined,
+    ...attrs
   }: Props = $props();
 
   onMount(() => {});
@@ -74,8 +74,7 @@
 </script>
 
 <video
-  {...attrs}
-  {src}
+  bind:this={ref}
   onerror={(e) => _onEvent(VideoEventType.Error, e)}
   onended={(e) => _onEvent(VideoEventType.Ended, e)}
   onloadedmetadata={(e) => _onEvent(VideoEventType.LoadedMetadata, e)}
@@ -87,7 +86,8 @@
   onwaiting={(e) => _onEvent(VideoEventType.Waiting, e)}
   onplaying={(e) => _onEvent(VideoEventType.Playing, e)}
   onpause={(e) => _onEvent(VideoEventType.Pause, e)}
-  bind:this={ref}
+  {...attrs}
+  {src}
 >
   <track kind="captions" />
 </video>
