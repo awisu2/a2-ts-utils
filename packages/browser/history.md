@@ -1,5 +1,10 @@
 # history
 
+## 26-06
+
+- 06-02
+  - added download `downloadToBlobWithRetryAsync`, `downloadToBlobAsync`
+
 ## 26-05
 
 - 05-30(sat)
