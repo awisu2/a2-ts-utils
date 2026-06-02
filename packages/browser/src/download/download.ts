@@ -242,5 +242,9 @@ export const getSampleTextDownloadProgress = (
   text += " " + getTextPercentage(progress);
   text += ` (${getTextSize(progress)})`;
   text += " " + getTextElapsed(progress);
+  if (progress.error) {
+    text += ` error: ${progress.error}`;
+  }
+
   return text;
 };
