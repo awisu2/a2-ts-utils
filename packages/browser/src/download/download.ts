@@ -4,6 +4,7 @@ export type DownloadProgress = {
   total: number;
   elapsed: number;
   chunks?: Uint8Array<ArrayBuffer>[] | undefined;
+  error?: string | undefined;
 };
 
 export const DownloadProgressType = {
@@ -14,6 +15,15 @@ export const DownloadProgressType = {
 } as const;
 export type DownloadProgressType =
   (typeof DownloadProgressType)[keyof typeof DownloadProgressType];
+
+const _defaultDownloadProgress: DownloadProgress = {
+  type: DownloadProgressType.Start,
+  loaded: 0,
+  total: 0,
+  elapsed: 0,
+  chunks: undefined,
+  error: undefined,
+};
 
 const _downloadToBlobAsync = async (
   url: string,
@@ -53,9 +63,15 @@ const _downloadToBlobAsync = async (
       loaded = oldChunksLength;
       chunks = oldChunks ? [...oldChunks] : [];
     } else {
-      throw new Error(
-        "Server does not support Range requests. " + `url: ${url}`,
-      );
+      const errorText =
+        "Server does not support Range requests. " + `url: ${url}`;
+
+      onProgress?.({
+        ..._defaultDownloadProgress,
+        type: DownloadProgressType.Error,
+        error: errorText,
+      });
+      throw new Error(errorText);
     }
   }
 
@@ -76,6 +92,7 @@ const _downloadToBlobAsync = async (
     loaded: number,
     type: DownloadProgressType = DownloadProgressType.Progress,
     chunks: Uint8Array<ArrayBuffer>[],
+    error: string | undefined = undefined,
   ) => {
     onProgress?.({
       ...baseProgress,
@@ -83,6 +100,7 @@ const _downloadToBlobAsync = async (
       loaded,
       elapsed: performance.now() - startTime,
       chunks,
+      error,
     });
   };
 
@@ -111,7 +129,12 @@ const _downloadToBlobAsync = async (
     _onProgress(loaded, DownloadProgressType.End, chunks);
     return new Blob(chunks);
   } catch (error) {
-    _onProgress(loaded, DownloadProgressType.Error, chunks);
+    _onProgress(
+      loaded,
+      DownloadProgressType.Error,
+      chunks,
+      (error as Error).message,
+    );
     throw error;
   }
 };
@@ -126,7 +149,7 @@ export const downloadToBlobAsync = async (
 export const downloadToBlobWithRetryAsync = async (
   url: string,
   retry: number,
-  onProgress?: (progress: DownloadProgress) => void,
+  onProgress?: (progress: DownloadProgress & { retry: number }) => void,
 ): Promise<Blob> => {
   let lastChunks: Uint8Array<ArrayBuffer>[] | undefined = undefined;
 
@@ -134,7 +157,7 @@ export const downloadToBlobWithRetryAsync = async (
     try {
       const _onProgress = (progress: DownloadProgress) => {
         lastChunks = progress.chunks;
-        onProgress?.(progress);
+        onProgress?.({ ...progress, retry: i });
       };
 
       // Note: コンパイラが絶対に値が代入されないと判断しエラーをだすため、一度 any にして取得
