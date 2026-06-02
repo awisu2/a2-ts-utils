@@ -59,10 +59,7 @@ const _downloadToBlobAsync = async (
   let loaded = 0;
   let chunks: Uint8Array<ArrayBuffer>[] = [];
   if (isResume) {
-    if (response.status === 206) {
-      loaded = oldChunksLength;
-      chunks = oldChunks ? [...oldChunks] : [];
-    } else {
+    if (response.status !== 206) {
       const errorText =
         "Server does not support Range requests. " + `url: ${url}`;
 
@@ -73,6 +70,9 @@ const _downloadToBlobAsync = async (
       });
       throw new Error(errorText);
     }
+
+    loaded = oldChunksLength;
+    chunks = oldChunks ? [...oldChunks] : [];
   }
 
   // fix parameters =====
@@ -129,12 +129,12 @@ const _downloadToBlobAsync = async (
     _onProgress(loaded, DownloadProgressType.End, chunks);
     return new Blob(chunks);
   } catch (error) {
-    _onProgress(
-      loaded,
-      DownloadProgressType.Error,
-      chunks,
-      (error as Error).message,
-    );
+    let errorMessage = error instanceof Error ? error.message : String(error);
+    if (errorMessage == "") {
+      errorMessage = "unknown error";
+    }
+
+    _onProgress(loaded, DownloadProgressType.Error, chunks, errorMessage);
     throw error;
   }
 };
