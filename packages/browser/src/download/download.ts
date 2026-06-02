@@ -162,3 +162,62 @@ export const downloadToFile = (url: string, filename: string) => {
   a.click();
   document.body.removeChild(a);
 };
+
+export const downloadBlobToFile = (blob: Blob, filename: string) => {
+  const url = URL.createObjectURL(blob);
+  downloadToFile(url, filename);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 100);
+};
+
+// generate text functions =====
+export const getTextStatus = (progress: DownloadProgress): string => {
+  switch (progress.type) {
+    case DownloadProgressType.Start:
+      return "Download started";
+    case DownloadProgressType.Progress:
+      return `Downloading...`;
+    case DownloadProgressType.End:
+      return "Download completed";
+    case DownloadProgressType.Error:
+      return "Download failed";
+    default:
+      return "";
+  }
+};
+
+export const getTextPercentage = (progress: DownloadProgress): string => {
+  if (progress.total === 0) {
+    return "0%";
+  }
+  const percentage = ((progress.loaded / progress.total) * 100).toFixed(1);
+  return `${percentage}%`;
+};
+
+export const getTextSize = (progress: DownloadProgress): string => {
+  if (progress.total === 0) {
+    return "0 MB";
+  }
+  const loadedMB = (progress.loaded / (1024 * 1024)).toFixed(2);
+  const totalMB = (progress.total / (1024 * 1024)).toFixed(2);
+  return `${loadedMB}/${totalMB} MB`;
+};
+
+export const getTextElapsed = (progress: DownloadProgress): string => {
+  if (progress.total === 0) {
+    return "";
+  }
+  const elapsedSeconds = (progress.elapsed / 1000).toFixed(2);
+  return `${elapsedSeconds}s`;
+};
+
+export const getSampleTextDownloadProgress = (
+  progress: DownloadProgress,
+): string => {
+  let text = getTextStatus(progress);
+  text += " " + getTextPercentage(progress);
+  text += ` (${getTextSize(progress)})`;
+  text += " " + getTextElapsed(progress);
+  return text;
+};
