@@ -1,5 +1,6 @@
 // get size from CanvasImageSource
 
+import { Bytes } from "@a2-ts-utils/common";
 import { getBlobAsync } from "./getBlob";
 
 // CanvasImageSource: HTMLImageElement, HTMLCanvasElement, HTMLVideoElement, ImageBitmap, OffscreenCanvas, SVGImageElement, VideoFrame etc.
@@ -22,7 +23,7 @@ export const getSizeBySource = (
 };
 
 export const getSourceAsync = async (
-  data: Blob | Uint8Array,
+  data: Blob | Bytes,
 ): Promise<CanvasImageSource> => {
   if (data instanceof Blob) {
     return await getSourceByBlobAsync(data);
@@ -35,7 +36,7 @@ const getSourceByBlobAsync = async (data: Blob): Promise<CanvasImageSource> => {
 };
 
 const getSourceByBytesAsync = async (
-  data: Uint8Array,
+  data: Bytes,
 ): Promise<CanvasImageSource> => {
   const blob = await getBlobAsync(data);
   return await getSourceByBlobAsync(blob);

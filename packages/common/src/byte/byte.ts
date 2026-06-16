@@ -1,6 +1,10 @@
 export type Bytes = Uint8Array<ArrayBuffer>;
 export type Chunks = Bytes[];
 
+export const isBytes = (data: unknown): data is Bytes => {
+  return data instanceof Uint8Array && data.buffer instanceof ArrayBuffer;
+};
+
 export function bytesToBase64(bytes: Bytes): string {
   // Node.js =====
   if (typeof Buffer !== "undefined") {

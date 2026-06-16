@@ -1,11 +1,9 @@
+import { Bytes } from "../byte";
 import { ImageMimeType } from "../type";
 
 // DataViewにすることで、byte単位の読み書きを可能にし、解析可能にする
 export namespace getHeadDataView {
-  export const ByBytes = (
-    bytes: Uint8Array,
-    length: number = 2048,
-  ): DataView => {
+  export const ByBytes = (bytes: Bytes, length: number = 2048): DataView => {
     const actualLength = Math.min(length, bytes.byteLength);
     const buffer = bytes.buffer.slice(
       bytes.byteOffset,
@@ -42,7 +40,7 @@ export namespace getImageMimeType {
     return ImageMimeType.UNKNOWN;
   };
 
-  export const ByBytes = (bytes: Uint8Array): ImageMimeType => {
+  export const ByBytes = (bytes: Bytes): ImageMimeType => {
     const view = getHeadDataView.ByBytes(bytes);
     return ByDataView(view);
   };
@@ -135,7 +133,7 @@ export namespace getImageSize {
   };
 
   export const ByBytes = (
-    bytes: Uint8Array,
+    bytes: Bytes,
   ): { width: number; height: number } | undefined => {
     const view = getHeadDataView.ByBytes(bytes);
     return getImageSize.ByDataView(view);

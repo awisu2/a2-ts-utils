@@ -1,4 +1,4 @@
-import { Bytes, Chunks, getChunksLength } from "../../../common/src/byte/byte";
+import { Bytes, Chunks, getChunksLength } from "@a2-ts-utils/common";
 
 // ダウンロード時のデータ全般、一部progress用のデータも持つ
 export class DownloadData {

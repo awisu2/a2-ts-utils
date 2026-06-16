@@ -1,14 +1,15 @@
+import { Bytes, isBytes } from "@a2-ts-utils/common";
 import { getCanvas2dBySource } from "./element";
 
 export const getBlobAsync = async (
-  src: HTMLCanvasElement | HTMLVideoElement | Uint8Array,
+  src: HTMLCanvasElement | HTMLVideoElement | Bytes,
   type: string = "image/png",
 ): Promise<Blob> => {
   if (src instanceof HTMLCanvasElement) {
     return await getBlobByCanvasAsync(src, type);
   } else if (src instanceof HTMLVideoElement) {
     return await getBlobByVideoElement(src, type);
-  } else if (src instanceof Uint8Array) {
+  } else if (isBytes(src)) {
     return getBlobByBytes(src);
   } else {
     throw new Error("Failed getBlobAsync. Invalid input type.");
@@ -42,12 +43,12 @@ const getBlobByVideoElement = async (
   return await getBlobByCanvasAsync(canvas, type);
 };
 
-const getBlobByBytes = (bytes: Uint8Array): Blob => {
-  if (!(bytes instanceof Uint8Array)) {
-    throw new Error("Failed getBlobByBytes. Invalid input: not a Uint8Array");
+const getBlobByBytes = (bytes: Bytes): Blob => {
+  if (!isBytes(bytes)) {
+    throw new Error("Failed getBlobByBytes. Invalid input: not a Bytes");
   }
   if (!(bytes.buffer instanceof ArrayBuffer)) {
     throw new Error("Failed getBlobByBytes. Invalid input: not an ArrayBuffer");
   }
-  return new Blob([bytes as Uint8Array<ArrayBuffer>]);
+  return new Blob([bytes]);
 };
