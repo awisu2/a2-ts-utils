@@ -1,5 +1,10 @@
 # history
 
+## 26-06
+
+- 06-16(tue)
+  - `Uint8Array<BufferArray>` を Bytes 及び Chunks として定義
+
 ## 26-05
 
 - 05-30(sat)

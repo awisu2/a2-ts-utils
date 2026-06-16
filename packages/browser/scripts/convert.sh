@@ -24,8 +24,10 @@ case "${COMMAND:-}" in
     echo "Converting download.ts..."
     cd $ROOT
     FILE="download/download"
+    GLOBAL_NAME="Download"
+    
     # Note: --global-name を指定することで Donload.fn() というように呼び出せるようになる
-    pnpm dlx esbuild ./src/$FILE.ts $CONV_OPTS  --global-name=Download --outfile=$OUT_DIR/$FILE.js
+    pnpm dlx esbuild ./src/$FILE.ts $CONV_OPTS  --global-name=$GLOBAL_NAME --outfile=$OUT_DIR/$FILE.js
   ;;
   -h|--help) help; exit 0 ;;
   *) echo "${COMMAND:-}"; help; exit 1 ;;

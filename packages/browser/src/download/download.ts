@@ -1,9 +1,26 @@
+import { Bytes, Chunks, getChunksLength } from "../../../common/src/byte/byte";
+
+// ダウンロード時のデータ全般、一部progress用のデータも持つ
+export class DownloadData {
+  loaded: number = 0;
+  chunks: Chunks = [];
+  fullSize: number = 0;
+  startTime: number = performance.now();
+  isFailedRangeRequest: boolean = false;
+
+  pushChunk(chunk: Bytes): void {
+    this.chunks.push(chunk);
+    this.loaded += chunk.length;
+  }
+}
+
 export type DownloadProgress = {
   type: DownloadProgressType;
   loaded: number;
   total: number;
   elapsed: number;
-  chunks?: Uint8Array<ArrayBuffer>[] | undefined;
+  isFailedRangeRequest?: boolean;
+  chunks: Chunks;
   error?: string | undefined;
 };
 
@@ -21,96 +38,113 @@ const _defaultDownloadProgress: DownloadProgress = {
   loaded: 0,
   total: 0,
   elapsed: 0,
-  chunks: undefined,
+  isFailedRangeRequest: false,
+  chunks: [],
   error: undefined,
 };
 
-const _downloadToBlobAsync = async (
-  url: string,
-  oldChunks?: Uint8Array<ArrayBuffer>[],
-  onProgress?: (progress: DownloadProgress) => void,
-): Promise<Blob> => {
-  const startTime = performance.now();
-
-  // 以前ロードが途中で停止していたときは、Rangeヘッダーを付与して再度リクエストする
-  const oldChunksLength =
-    oldChunks?.reduce((acc, chunk) => acc + chunk.length, 0) ?? 0;
-  const fetchOptions: RequestInit = {};
-  const isResume = oldChunksLength > 0;
-  if (isResume) {
-    fetchOptions.headers = {
-      Range: `bytes=${oldChunksLength}-`,
+const createFetchRequest = (range: number): RequestInit => {
+  const request: RequestInit = {};
+  if (range > 0) {
+    request.headers = {
+      Range: `bytes=${range}-`,
     };
   }
+  return request;
+};
+
+const getProgressByData = (
+  data: DownloadData,
+  type: DownloadProgressType = DownloadProgressType.Progress,
+  error: string | undefined = undefined,
+  isFailedRangeRequest: boolean = false,
+): DownloadProgress => {
+  return {
+    ..._defaultDownloadProgress,
+    type,
+    loaded: data.loaded,
+    total: data.fullSize,
+    chunks: data.chunks,
+    elapsed: performance.now() - data.startTime,
+    error,
+    isFailedRangeRequest,
+  };
+};
+
+// fetch() 関数を利用したダウンロード
+// oldChunks を渡すことで resume する。oldChunksは onProgress により最新値が共有される
+const _downloadAsync = async (
+  url: string,
+  oldChunks?: Chunks,
+  onProgress?: (progress: DownloadProgress) => void,
+): Promise<Chunks> => {
+  // util function =====
+  const _onProgress = (
+    data: DownloadData,
+    type: DownloadProgressType = DownloadProgressType.Progress,
+    error: string | undefined = undefined,
+    isFailedRangeRequest: boolean = false,
+  ) => {
+    if (onProgress == null) {
+      return;
+    }
+    onProgress(getProgressByData(data, type, error, isFailedRangeRequest));
+  };
 
   // download =====
-  const response = await fetch(url, fetchOptions);
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch url. status: ${response.status} (${response.statusText}), url: ${url}`,
-    );
-  }
+  const data = new DownloadData();
+  let response: Response;
+  try {
+    const oldChunksLength = oldChunks ? getChunksLength(oldChunks) : 0;
+    data.chunks = oldChunks ? [...oldChunks] : [];
+    data.loaded = oldChunksLength;
 
-  if (!response.body) {
-    throw new Error("Failed to get response body." + `url: ${url}`);
-  }
-
-  // get range parameters =====
-  let loaded = 0;
-  let chunks: Uint8Array<ArrayBuffer>[] = [];
-  if (isResume) {
-    if (response.status !== 206) {
-      const errorText =
-        "Server does not support Range requests. " + `url: ${url}`;
-
-      onProgress?.({
-        ..._defaultDownloadProgress,
-        type: DownloadProgressType.Error,
-        error: errorText,
-      });
+    // 以前ロードが途中で停止していたときは、Rangeヘッダーを付与して再度リクエストする
+    const request = createFetchRequest(oldChunksLength);
+    response = await fetch(url, request);
+    if (!response.ok) {
+      const errorText = `Failed to fetch url. status: ${response.status} (${response.statusText}), url: ${url}`;
       throw new Error(errorText);
     }
 
-    loaded = oldChunksLength;
-    chunks = oldChunks ? [...oldChunks] : [];
+    if (!response.body) {
+      const errorText = `Failed to get response body. url: ${url}`;
+      throw new Error(errorText);
+    }
+
+    // get range parameters =====
+    const isResume = oldChunksLength > 0;
+    if (isResume) {
+      if (response.status !== 206) {
+        // Rangeに対応していないと思われるためデータクリア
+        data.chunks = [];
+        data.loaded = 0;
+        data.isFailedRangeRequest = true;
+
+        const errorText =
+          "Server does not support Range requests. " + `url: ${url}`;
+        throw new Error(errorText);
+      }
+    }
+
+    // fix parameters =====
+    const contentLength = response.headers.get("content-length");
+    if (contentLength != null) {
+      // content-length は ダウンロードするサイズ、コンテンツ全体のsizeではないため、resume時は合算する必要がある
+      data.fullSize = parseInt(contentLength, 10) + data.loaded;
+    }
+  } catch (error) {
+    let errorMessage = error instanceof Error ? error.message : String(error);
+    _onProgress(data, DownloadProgressType.Error, errorMessage);
+    throw error;
   }
 
-  // fix parameters =====
-  const contentLength = response.headers.get("content-length");
-  const total = contentLength ? parseInt(contentLength, 10) + loaded : loaded;
-
-  const baseProgress: DownloadProgress = {
-    type: DownloadProgressType.Progress,
-    loaded: loaded,
-    total: total,
-    elapsed: 0,
-    chunks: chunks,
-  };
-
-  // util function
-  const _onProgress = (
-    loaded: number,
-    type: DownloadProgressType = DownloadProgressType.Progress,
-    chunks: Uint8Array<ArrayBuffer>[],
-    error: string | undefined = undefined,
-  ) => {
-    onProgress?.({
-      ...baseProgress,
-      type,
-      loaded,
-      elapsed: performance.now() - startTime,
-      chunks,
-      error,
-    });
-  };
-
-  // progress status =====
-  const reader = response.body.getReader();
-
   // start =====
-  _onProgress(loaded, DownloadProgressType.Start, chunks);
+  _onProgress(data, DownloadProgressType.Start);
 
   try {
+    // progress status =====
+    const reader = response.body.getReader();
     while (true) {
       const { done, value } = await reader.read();
       if (done) {
@@ -121,20 +155,24 @@ const _downloadToBlobAsync = async (
         continue;
       }
 
-      chunks.push(value);
-      loaded += value.length;
-      _onProgress(loaded, DownloadProgressType.Progress, chunks);
+      data.pushChunk(value);
+      _onProgress(data, DownloadProgressType.Progress);
     }
 
-    _onProgress(loaded, DownloadProgressType.End, chunks);
-    return new Blob(chunks);
+    _onProgress(data, DownloadProgressType.End);
+    return data.chunks;
   } catch (error) {
     let errorMessage = error instanceof Error ? error.message : String(error);
     if (errorMessage == "") {
       errorMessage = "unknown error";
     }
 
-    _onProgress(loaded, DownloadProgressType.Error, chunks, errorMessage);
+    _onProgress(
+      data,
+      DownloadProgressType.Error,
+      errorMessage,
+      data.isFailedRangeRequest,
+    );
     throw error;
   }
 };
@@ -143,7 +181,8 @@ export const downloadToBlobAsync = async (
   url: string,
   onProgress?: (progress: DownloadProgress) => void,
 ): Promise<Blob> => {
-  return await _downloadToBlobAsync(url, undefined, onProgress);
+  const chunks = await _downloadAsync(url, undefined, onProgress);
+  return new Blob(chunks);
 };
 
 export const downloadToBlobWithRetryAsync = async (
@@ -151,18 +190,23 @@ export const downloadToBlobWithRetryAsync = async (
   retry: number,
   onProgress?: (progress: DownloadProgress & { retry: number }) => void,
 ): Promise<Blob> => {
-  let lastChunks: Uint8Array<ArrayBuffer>[] | undefined = undefined;
+  let lastChunks: Chunks | undefined = undefined;
+  let isFailedRangeRequest = false;
 
   for (let i = 0; i <= retry; i++) {
     try {
+      isFailedRangeRequest = false;
       const _onProgress = (progress: DownloadProgress) => {
         lastChunks = progress.chunks;
         onProgress?.({ ...progress, retry: i });
+        if (progress.isFailedRangeRequest) {
+          isFailedRangeRequest = true;
+        }
       };
 
-      // Note: コンパイラが絶対に値が代入されないと判断しエラーをだすため、一度 any にして取得
-      // 初期値が　null かつ 値のセットが、非同期のコールバック経由のため、コンパイラからは確実に null だという判断になるとのこと
-      return await _downloadToBlobAsync(url, lastChunks, _onProgress);
+      const _lastChunks = isFailedRangeRequest ? undefined : lastChunks;
+      const chunks = await _downloadAsync(url, _lastChunks, _onProgress);
+      return new Blob(chunks);
     } catch (error) {
       if (i === retry) {
         throw new Error(

@@ -18,6 +18,10 @@
 
     "composite": true
   },
-  "include": ["src/**/*.ts", "../common/src/common/type.ts"],
+  "include": [
+    "src/**/*.ts",
+    "../common/src/common/type.ts",
+    "../common/src/byte/utils.ts"
+  ],
   "references": [{ "path": "../common" }]
 }

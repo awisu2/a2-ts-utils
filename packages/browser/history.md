@@ -2,6 +2,8 @@
 
 ## 26-06
 
+- 06-16
+  - downloadのリファクタ
 - 06-02
   - added download `downloadToBlobWithRetryAsync`, `downloadToBlobAsync`
 

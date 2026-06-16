@@ -1,4 +1,7 @@
-export function bytesToBase64(bytes: Uint8Array): string {
+export type Bytes = Uint8Array<ArrayBuffer>;
+export type Chunks = Bytes[];
+
+export function bytesToBase64(bytes: Bytes): string {
   // Node.js =====
   if (typeof Buffer !== "undefined") {
     return Buffer.from(bytes).toString("base64");
@@ -13,3 +16,8 @@ export function bytesToBase64(bytes: Uint8Array): string {
   }
   return btoa(binary);
 }
+
+export const getChunksLength = (chunks: Chunks): number => {
+  // reduce: 各要素を集約して一つの値にまとめる (複数を一つに減らすため reduce という名前らしい)
+  return chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+};
